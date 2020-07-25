@@ -1,0 +1,57 @@
+module.exports = {
+  purge: ['./components/**/*.js', './pages/**/*.js'],
+  theme: {
+    zIndex: {
+      '0': 0,
+      '10': 10,
+      '20': 20,
+      '30': 30,
+      '40': 40,
+      '50': 50,
+      '25': 25,
+      '50': 50,
+      '75': 75,
+      '100': 100,
+      '999': 999,
+      auto: 'auto',
+    },
+    container: {
+      center: true,
+    },
+    extend: {
+      backgroundOpacity: {
+        '10': '0.1',
+        '20': '0.2',
+        '95': '0.95',
+      },
+    },
+    colors: {
+      transparent: 'transparent',
+      white: '#FFFBF5',
+      orange: {
+        '900': '#FF9A00',
+        '700': '#FFF4E2',
+        '500': '#FFD480',
+        '100': '#F6F7D7',
+      },
+      black: '#444F5A',
+      gray: {
+        '100': '#f5f5f5',
+        '200': '#eeeeee',
+        '300': '#e0e0e0',
+        '400': '#bdbdbd',
+        '500': '#9e9e9e',
+        '600': '#757575',
+        '700': '#616161',
+        '800': '#424242',
+        '900': '#212121',
+      },
+      green: '#48BB78',
+      yellow: '#ffe500',
+      blue: '#4300ff',
+      red: '#ff4300',
+    },
+  },
+  variants: {},
+  plugins: [],
+};

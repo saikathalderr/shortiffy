@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  src: url('./font/MADE\ Dillan.otf');
+  font-family: 'MADE_Dillan';
+}
+@font-face {
+  src: url('./font/Montserrat-Black.ttf');
+  font-family: 'Montserrat Black';
+}
+@font-face {
+  src: url('./font/Montserrat-ExtraBold.ttf');
+  font-family: 'Montserrat ExtraBold';
+}
+
+* {
+  transition: all 0.3s;
+}
+*:focus {
+  outline: none !important;
+}
+.theme-font {
+  font-family: 'MADE_Dillan';
+}
+.theme-font-montserrat-black {
+  font-family: 'Montserrat Black';
+}
+.theme-font-montserrat-extra-bold {
+  font-family: 'Montserrat ExtraBold';
+}
+.theme-rounded {
+  border-radius: 10px;
+}
+.theme-icon-btn {
+  border: none;
+  border-radius: 50%;
+  min-width: 50px;
+  max-width: 50px;
+  min-height: 50px;
+  max-height: 50px;
+  background: #ff9a00;
+  color: #fff;
+  font-size: 20px;
+  box-shadow: 0px 3px 10px rgba(255, 154, 0, 0.4);
+}
+.dashboard-btn {
+  background: #fffbf5;
+  color: #ff9a00;
+  font-family: 'Montserrat Black';
+}
+.dashboard-btn:hover {
+  background: #fff4e2;
+}
+
+.short-container {
+  position: relative;
+}
+.short-btn {
+  position: absolute;
+  right: 10px;
+  box-shadow: 0px 3px 10px rgba(255, 154, 0, 0.4);
+}
+.logo {
+  cursor: pointer;
+}
+.link-container:first-child {
+  margin-top: 0 !important;
+}

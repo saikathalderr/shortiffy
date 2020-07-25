@@ -1,0 +1,24 @@
+{
+  "name": "shortiffy",
+  "version": "1.0.0",
+  "description": "The faster way to Shorten, Share, Analyze your long link's to know your audience for free.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-regular-svg-icons": "^5.14.0",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "next": "^9.4.4",
+    "postcss-preset-env": "^6.7.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "recharts": "^1.8.5",
+    "tailwindcss": "^1.5.2"
+  }
+}
