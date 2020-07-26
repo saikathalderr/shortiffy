@@ -14,11 +14,13 @@
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "axios": "^0.19.2",
     "next": "^9.4.4",
     "postcss-preset-env": "^6.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.21",
+    "react-toastify": "^6.0.8",
     "recharts": "^1.8.5",
     "tailwindcss": "^1.5.2"
   }

@@ -1,31 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
-import SocialLogin from '../components/SocialLogin';
+import { API_URL } from '../config';
+import axios from 'axios';
+import Router from 'next/router';
+// import SocialLogin from '../components/SocialLogin';
 
 function Register() {
+  const [email, setemail] = useState('');
+  const [fullname, setfullname] = useState('');
+  const [password, setpassword] = useState('');
+  const [loading, setloading] = useState(false);
+
+  const registerUser = (e) => {
+    e.preventDefault();
+    setloading(true);
+    let user = {
+      full_name: fullname,
+      email: email,
+      password: password,
+    };
+
+    axios({
+      method: 'post',
+      url: `${API_URL}/user/createNewNormlaUser`,
+      data: user,
+      validateStatus: (status) => {
+        return true;
+      },
+    })
+      .catch((err) => {
+        console.log(err);
+        setloading(false);
+      })
+      .then((res) => {
+        toast[res.data.status](res.data.message);
+        setloading(false);
+        if (res.data.status === 'success') {
+          Router.push('/login');
+        }
+      });
+  };
+
   return (
     <>
-      <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='bg-white border-b-8 border-orange-900 min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full'>
-          <Link href='/'>
-            <div className='mb-5'>
+          <div className='mb-5'>
+            <Link href='/'>
               <button className='bg-black bg-opacity-0 hover:bg-opacity-10 w-10 h-10 text-black rounded-full'>
                 <FontAwesomeIcon icon={faLongArrowAltLeft} />
               </button>
-              <span className='text-black theme-font-montserrat-black ml-2'>
-                Home
-              </span>
-            </div>
-          </Link>
+            </Link>
+            <span className='text-black theme-font-montserrat-black ml-2'>
+              Home
+            </span>
+          </div>
           <div>
             <h1 className='theme-font text-orange-900 text-5xl'>Shortiffy</h1>
             <h2 className='text-3xl leading-9 theme-font-montserrat-black text-gray-900'>
-              Register your account
+              Register your new account
             </h2>
+            <p className='pt-2'>
+              <span className='float-right text-xs text-gray-500 font-bold'>
+                <Link href='/login'>I already have a account</Link>
+              </span>
+            </p>
           </div>
-          <form className='mt-8' action='#' method='POST'>
+          <form
+            className='mt-8'
+            action='#'
+            method='POST'
+            onSubmit={registerUser}
+          >
             <input type='hidden' name='remember' value='true' />
             <div className='rounded-md shadow-sm'>
               <div>
@@ -33,6 +82,10 @@ function Register() {
                   aria-label='Email address'
                   name='email'
                   type='email'
+                  value={email}
+                  onChange={(e) => {
+                    setemail(e.target.value);
+                  }}
                   required
                   className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-orange-900 focus:border-orange-900-300 focus:z-10 sm:text-sm sm:leading-5'
                   placeholder='Email address'
@@ -44,6 +97,10 @@ function Register() {
                   name='full name'
                   type='text'
                   required
+                  value={fullname}
+                  onChange={(e) => {
+                    setfullname(e.target.value);
+                  }}
                   className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-orange-900 focus:border-orange-900-300 focus:z-10 sm:text-sm sm:leading-5'
                   placeholder='Full name'
                 />
@@ -54,6 +111,10 @@ function Register() {
                   name='password'
                   type='password'
                   required
+                  value={password}
+                  onChange={(e) => {
+                    setpassword(e.target.value);
+                  }}
                   className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-orange-900 focus:border-orange-900-300 focus:z-10 sm:text-sm sm:leading-5'
                   placeholder='Password'
                 />
@@ -68,21 +129,31 @@ function Register() {
                 Sign in
               </button>
             </div> */}
-            <div class='mt-6 inline-flex w-full'>
-              <button
-                type='submit'
-                className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-20 hover:bg-opacity-25'
-              >
-                Sign Up
-              </button>
-              <Link href='/login'>
+            <div className='mt-6 inline-flex w-full'>
+              {loading ? (
+                <button
+                  type='button'
+                  disabled
+                  className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-10 cursor-not-allowed'
+                >
+                  Signing up...
+                </button>
+              ) : (
+                <button
+                  type='submit'
+                  className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-20 hover:bg-opacity-25'
+                >
+                  Sign Up
+                </button>
+              )}
+              {/* <Link href='/login'>
                 <button
                   type='submit'
                   className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-0'
                 >
                   Sign In
                 </button>
-              </Link>
+              </Link> */}
             </div>
             {/* <div className='my-5 text-gray-300 text-center'>Or</div>
             <div className='text-center'>

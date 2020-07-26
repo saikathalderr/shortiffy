@@ -8,15 +8,15 @@ exports.createNewNormlaUser = async (req, res) => {
     const full_name = req.body.full_name;
     const email = req.body.email;
     const password = req.body.password;
-    const user_type = req.body.user_type;
+    const user_type = 'normal';
     const is_social_user = false;
+    const hasEmail = await User.findOne({ email: email });
 
-    if (!full_name || !email || !password || !user_type)
-      throw new Error(
-        `full_name or email or password or user_type is missing 😥`
-      );
+    if (!full_name || !email || !password)
+      throw new Error(`full_name or email or password is missing 😥`);
 
     if (!validator.isEmail(email)) throw new Error(`Invalid email address 😥`);
+    if (hasEmail) throw new Error(`Email address is already in use 😒`);
 
     bcrypt.genSalt(saltRounds, function (err, salt) {
       bcrypt.hash(password, salt, function (err, hash) {

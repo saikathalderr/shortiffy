@@ -7,23 +7,28 @@ import SocialLogin from '../components/SocialLogin';
 function login() {
   return (
     <>
-      <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='bg-white border-b-8 border-orange-900 min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full'>
-          <Link href='/'>
-            <div className='mb-5'>
+          <div className='mb-5'>
+            <Link href='/'>
               <button className='bg-black bg-opacity-0 hover:bg-opacity-10 w-10 h-10 text-black rounded-full'>
                 <FontAwesomeIcon icon={faLongArrowAltLeft} />
               </button>
-              <span className='text-black theme-font-montserrat-black ml-2'>
-                Home
-              </span>
-            </div>
-          </Link>
+            </Link>
+            <span className='text-black theme-font-montserrat-black ml-2'>
+              Home
+            </span>
+          </div>
           <div>
             <h1 className='theme-font text-orange-900 text-5xl'>Shortiffy</h1>
             <h2 className='text-3xl leading-9 theme-font-montserrat-black text-gray-900'>
-              Sign in to your account
+              Sign in to your account 🥳
             </h2>
+            <p className='pt-2'>
+              <span className='float-right text-xs text-gray-500 font-bold'>
+                <Link href='/register'>I dont have a account</Link>
+              </span>
+            </p>
           </div>
           <form className='mt-8' action='#' method='POST'>
             <input type='hidden' name='remember' value='true' />
@@ -68,7 +73,7 @@ function login() {
                   className='form-checkbox h-4 w-4 text-orange-900 transition duration-150 ease-in-out'
                 />
                 <label
-                  for='remember_me'
+                  htmlFor='remember_me'
                   className='ml-2 block text-sm leading-5 text-gray-900'
                 >
                   Remember me
@@ -93,18 +98,18 @@ function login() {
                 Sign in
               </button>
             </div> */}
-            <div class='mt-5 inline-flex w-full'>
+            <div className='mt-5 inline-flex w-full'>
               <button
                 type='submit'
                 className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-20 hover:bg-opacity-25'
               >
                 Sign In
               </button>
-              <Link href='/register'>
+              {/* <Link href='/register'>
                 <button className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-0'>
                   Sign Up
                 </button>
-              </Link>
+              </Link> */}
             </div>
             {/* <div className='my-5 text-gray-300 text-center'>Or</div>
             <div className='text-center'>
