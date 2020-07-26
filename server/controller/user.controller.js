@@ -3,14 +3,13 @@ const bcrypt = require('bcrypt');
 const saltRounds = process.env.BCRYPE_SALT_ROUND;
 const User = require('../model/user.modal');
 
-exports.createNewUser = async (req, res) => {
+exports.createNewNormlaUser = async (req, res) => {
   try {
     const full_name = req.body.full_name;
     const email = req.body.email;
     const password = req.body.password;
     const user_type = req.body.user_type;
-    const is_social_user = user_type !== 'normal' ? true : false;
-    const social_account_details = req.body.social_account_details;
+    const is_social_user = false;
 
     if (!full_name || !email || !password || !user_type)
       throw new Error(
@@ -18,9 +17,6 @@ exports.createNewUser = async (req, res) => {
       );
 
     if (!validator.isEmail(email)) throw new Error(`Invalid email address 😥`);
-
-    if (is_social_user === true && !social_account_details)
-      throw new Error(`Social account details needed 😥`);
 
     bcrypt.genSalt(saltRounds, function (err, salt) {
       bcrypt.hash(password, salt, function (err, hash) {
@@ -30,7 +26,6 @@ exports.createNewUser = async (req, res) => {
           password: hash,
           user_type,
           is_social_user,
-          social_account_details,
         });
 
         new_user
