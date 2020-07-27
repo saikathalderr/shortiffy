@@ -8,8 +8,6 @@ exports.createNewLink = async (req, res) => {
   try {
     const long_url = req.query.long_url;
     const will_expire = req.query.will_expire;
-    const created_by = req.query.created_by;
-    if (!created_by) throw new Error(`You are not authorized 🛑`);
     if (!long_url) throw new Error(`No URL found to shorten.`);
     if (!isUrl(long_url)) throw new Error(`URL is invalid`);
     if (will_expire) {
@@ -25,7 +23,7 @@ exports.createNewLink = async (req, res) => {
       short_url: `${process.env.SERVER_URL}/${url_crypto}`,
       long_url: long_url,
       will_expire: will_expire ? will_expire : 'life_time',
-      created_by,
+      created_by: req.user.data._id,
     });
     new_link
       .save()
