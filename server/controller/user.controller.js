@@ -1,5 +1,6 @@
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const saltRounds = process.env.BCRYPE_SALT_ROUND;
 const User = require('../model/user.modal');
 
@@ -42,6 +43,51 @@ exports.createNewNormlaUser = async (req, res) => {
               message: err.message,
             });
           });
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+exports.loginNormlaUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    if (!email) throw new Error('Email is required for logging in. 😑');
+    if (!password) throw new Error('Password is required for logging in. 😒');
+
+    const hasUser = await User.findOne({ email: email });
+
+    if (!hasUser)
+      throw new Error(`No account found with the email of ${email}`);
+
+    bcrypt.compare(password, hasUser.password, function (err, result) {
+      if (err) throw new Error(err);
+      if (!result) throw new Error(`Wrong password 😕`);
+
+      let user = { ...hasUser._doc };
+      delete user['password'];
+      delete user['createdAt'];
+      delete user['updatedAt'];
+      delete user['__v'];
+
+      let token = jwt.sign(
+        {
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          data: user,
+        },
+        process.env.SECRET
+      );
+
+      return res.status(200).json({
+        status: 'success',
+        message: `Login successfull, welcome ${hasUser.full_name}`,
+        token: token,
       });
     });
   } catch (error) {
