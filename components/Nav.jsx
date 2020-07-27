@@ -4,7 +4,9 @@ import Link from 'next/link';
 import Profile from './Profile';
 
 function Nav() {
-  const [auth, setauth] = useState(false);
+  const [auth, setauth] = useState(
+    window.localStorage.getItem('token') ? true : false
+  );
   return (
     <>
       <div className='flex mb-4'>
