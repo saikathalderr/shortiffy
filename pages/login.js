@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLongArrowAltLeft,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 import { API_URL } from '../config';
 import axios from 'axios';
 import Router from 'next/router';
@@ -37,9 +40,8 @@ function login() {
           localStorage.setItem('token', res.data.token);
           setTimeout(() => {
             toast[res.data.status](res.data.message);
-            setloading(false);
             Router.push('/dashboard');
-          }, 1000);
+          }, 3000);
         }
       });
   };
@@ -64,9 +66,11 @@ function login() {
               Sign in to your account 🥳
             </h2>
             <p className='pt-2'>
-              <span className='float-right text-xs text-gray-500 font-bold'>
-                <Link href='/register'>I dont have a account</Link>
-              </span>
+              <Link href='/register'>
+                <span className='float-right text-xs text-gray-500 font-bold'>
+                  I dont have a account
+                </span>
+              </Link>
             </p>
           </div>
           <form className='mt-8' action='#' method='POST' onSubmit={loginUser}>
@@ -152,6 +156,7 @@ function login() {
                   disabled
                   className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-10 cursor-not-allowed'
                 >
+                  <FontAwesomeIcon icon={faSpinner} className='mr-2 loader' />
                   Signin in...
                 </button>
               ) : (
