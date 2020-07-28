@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-
-import { useDispatch } from 'react-redux';
-
 import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Links from '../components/Links';
 import CreateLink from '../components/CreateModal';
-import { fetchShortUrls } from '../store/actions/shortUrlActions';
 
 function Listing() {
-  const dispatch = useDispatch();
-
-  dispatch(fetchShortUrls());
-
   return (
     <>
       <div className='p-5 sticky top-0 z-10'>
