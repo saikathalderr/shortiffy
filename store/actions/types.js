@@ -1,0 +1,1 @@
+export const FETCH_SHORT_LINKS = 'FETCH_SHORT_LINKS';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Links from '../components/Links';
 import CreateLink from '../components/CreateModal';
 
-function Listing() {
+import { connect } from 'react-redux';
+import { fetchShortUrls } from '../store/actions/shortUrlAction';
+
+function Listing(props) {
+  useEffect(() => {
+    props.fetchShortUrls();
+  }, []);
+  console.log(props);
   return (
     <>
       <div className='p-5 sticky top-0 z-10'>
@@ -31,8 +38,12 @@ function Listing() {
               placeholder='🔍 Search by short link, long link, date'
             />
             <div className='py-5'>
-              <Links />
-              <Links />
+              {props.links.length
+                ? props.links.map(
+                    (link) =>
+                      <Links key={link._id} linkData={link} /> || <Skeleton />
+                  )
+                : null}
             </div>
           </div>
         </div>
@@ -41,4 +52,8 @@ function Listing() {
   );
 }
 
-export default Listing;
+function mapStateToProps(state) {
+  const { shortURLS } = state;
+  return { links: shortURLS.links };
+}
+export default connect(mapStateToProps, { fetchShortUrls })(Listing);
