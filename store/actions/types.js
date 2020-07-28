@@ -1,0 +1,1 @@
+export const GET_SHORTEN_URL = 'GET_SHORTEN_URL';
