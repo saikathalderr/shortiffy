@@ -17,7 +17,7 @@ exports.createNewLink = async (req, res) => {
         throw new Error(`Expire date should be after today, LOL 😆`);
     }
 
-    const url_crypto = cryptoRandomString({ length: 10, type: 'base64' });
+    const url_crypto = cryptoRandomString({ length: 7, type: 'base64' });
 
     let new_link = new Link({
       short_url: `${process.env.SERVER_URL}/${url_crypto}`,
@@ -39,6 +39,23 @@ exports.createNewLink = async (req, res) => {
           message: err.message,
         });
       });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+exports.getShortLinks = async (req, res) => {
+  try {
+    const userID = req.user.data._id;
+    const links = await Link.find({ created_by: userID });
+
+    return res.status(200).json({
+      status: 'success',
+      data: links,
+    });
   } catch (error) {
     return res.status(500).json({
       status: 'error',
