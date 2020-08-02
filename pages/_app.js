@@ -1,8 +1,8 @@
 import Auth from '../components/auth';
 import { ToastContainer } from 'react-toastify';
-import '../styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
-
+import 'antd/dist/antd.css';
+import '../styles/index.css';
 import { Provider } from 'react-redux';
 import store from '../store/store';
 

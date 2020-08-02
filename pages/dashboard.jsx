@@ -1,28 +1,41 @@
 import React from 'react';
 
+import { Layout, Menu } from 'antd';
+import {
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+
 import Listing from '../components/Listing';
 import AnalizeNumbers from '../components/AnalizeNumbers';
 
+const { Header, Content, Sider } = Layout;
 function dashboard() {
   return (
     <div className='bg-gray-100'>
-      {/* <div className='flex flex-wrap'>
-        <div className='w-full md:w-1/4'>
+      <Layout style={{minHeight: '100vh'}}>
+        <Sider
+          breakpoint='lg'
+          collapsedWidth='0'
+          width={350}
+          theme={'light'}
+          className='shadow-lg'
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
+        >
           <Listing />
-        </div>
-        <div className='w-full md:w-3/4'>
-          <AnalizeNumbers />
-        </div>
-      </div> */}
-
-      <div className='w-full flex flex-wrap mx-auto'>
-        <div className='w-full min-h-screen lg:w-1/5 leading-normal bg-white theme-rounded shadow-xl'>
-          <Listing />
-        </div>
-        <div className='w-full lg:w-4/5'>
-          <AnalizeNumbers />
-        </div>
-      </div>
+        </Sider>
+        <Layout>
+          <Content>
+            <AnalizeNumbers />
+          </Content>
+        </Layout>
+      </Layout>
     </div>
   );
 }

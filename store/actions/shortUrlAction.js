@@ -3,9 +3,11 @@ import axios from 'axios';
 import { API_URL } from '../../config';
 import { toast } from 'react-toastify';
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-  'token'
-)}`;
+if (process.browser) {
+  axios.defaults.headers.common[
+    'Authorization'
+  ] = `Bearer ${localStorage.getItem('token')}`;
+}
 
 export const fetchShortUrls = () => (dispatch) => {
   axios({
