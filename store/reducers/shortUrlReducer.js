@@ -1,7 +1,8 @@
-import { FETCH_SHORT_LINKS } from '../actions/types';
+import { FETCH_SHORT_LINKS, FETCHING_SHORT_LINKS } from '../actions/types';
 
 const initialState = {
   links: [],
+  isLoading: false,
 };
 
 export default function (state = initialState, action) {
@@ -10,7 +11,10 @@ export default function (state = initialState, action) {
       return {
         ...state,
         links: action.payload,
+        isLoading: false,
       };
+      case FETCHING_SHORT_LINKS:
+        return { ...state, isLoading : true};
 
     default:
       return state;

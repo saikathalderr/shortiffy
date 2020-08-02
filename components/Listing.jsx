@@ -8,6 +8,7 @@ import CreateLink from '../components/CreateModal';
 
 import { connect } from 'react-redux';
 import { fetchShortUrls } from '../store/actions/shortUrlAction';
+import Skeleton from 'react-loading-skeleton';
 
 function Listing(props) {
   useEffect(() => {
@@ -38,12 +39,17 @@ function Listing(props) {
               placeholder='🔍 Search by short link, long link, date'
             />
             <div className='py-5'>
-              {props.links.length
-                ? props.links.map(
-                    (link) =>
-                      <Links key={link._id} linkData={link} /> || <Skeleton />
-                  )
-                : null}
+              {props.isLoading ? (
+                <>
+                {[1,2,3,4].map(e => {
+                  return <Skeleton key={e} height={80} />;
+                })}
+                </>
+              ) : props.links.length ? (
+                props.links.map(link => {
+                  return <Links key={link._id} linkData={link} />;
+                })
+              ) : null}
             </div>
           </div>
         </div>
@@ -54,6 +60,6 @@ function Listing(props) {
 
 function mapStateToProps(state) {
   const { shortURLS } = state;
-  return { links: shortURLS.links };
+  return { links: shortURLS.links, isLoading: shortURLS.isLoading };
 }
 export default connect(mapStateToProps, { fetchShortUrls })(Listing);
