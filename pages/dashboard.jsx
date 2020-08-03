@@ -1,12 +1,25 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Layout } from 'antd';
 
 import Listing from '../components/Listing';
 import AnalizeNumbers from '../components/AnalizeNumbers';
+import SelectToSeeAnalyze from '../components/SelectToSeeAnalyze';
 
 const { Content, Sider } = Layout;
+
 function dashboard() {
+  const router = useRouter();
+  const { query } = router;
+
+  const [linkSelected, setLinkSelected] = useState(false);
+
+  useEffect(() => {
+    if (query.analyze) {
+      setLinkSelected(true);
+    }
+  }, [query]);
+
   return (
     <div className='bg-gray-100'>
       <Layout style={{ minHeight: '100vh' }}>
@@ -27,7 +40,7 @@ function dashboard() {
         </Sider>
         <Layout>
           <Content>
-            <AnalizeNumbers />
+            {linkSelected ? <AnalizeNumbers /> : <SelectToSeeAnalyze />}
           </Content>
         </Layout>
       </Layout>
