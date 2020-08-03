@@ -24,7 +24,7 @@ function Links(props) {
         <div className='w-full'>
           <span className='text-xs font-bold text-gray-400'>
             <FontAwesomeIcon icon={faCalendarDay} className='mr-2' />
-            <Moment format='LLLL'>{props.linkData.createdAt}</Moment>
+            <Moment format='YYYY-MM-DD'>{props.linkData.createdAt}</Moment>
           </span>
         </div>
         <div>

@@ -6,9 +6,9 @@ const Link = require('../model/link.modal');
 
 exports.createNewLink = async (req, res) => {
   try {
-    const long_url = req.query.long_url;
-    const will_expire = req.query.will_expire;
-    const link_value = req.query.link_value;
+    const long_url = req.body.long_url;
+    const will_expire = req.body.will_expire;
+    const link_value = req.body.link_value;
     if (!long_url) throw new Error(`No URL found to shorten.`);
     if (!isUrl(long_url)) throw new Error(`URL is invalid`);
     if (will_expire) {
@@ -55,7 +55,7 @@ exports.createNewLink = async (req, res) => {
 exports.getShortLinks = async (req, res) => {
   try {
     const userID = req.user.data._id;
-    const links = await Link.find({ created_by: userID });
+    const links = await Link.find({ created_by: userID }).sort('-createdAt');
 
     return res.status(200).json({
       status: 'success',

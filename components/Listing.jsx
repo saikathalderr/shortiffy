@@ -14,7 +14,6 @@ function Listing(props) {
   useEffect(() => {
     props.fetchShortUrls();
   }, []);
-  console.log(props);
   return (
     <>
       <div className='p-5 sticky top-0 z-10'>

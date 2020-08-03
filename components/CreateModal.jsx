@@ -1,14 +1,49 @@
-import React, { useState } from 'react';
-import { faPlusSquare , faDollarSign} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon, } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from 'react';
+import { faPlusSquare, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DatePicker, Input } from 'antd';
 
-function CreateModal() {
+import { connect } from 'react-redux';
+import {
+  createNewShortUrl,
+  fetchShortUrls,
+} from '../store/actions/shortUrlAction';
+
+function CreateModal(props) {
   const [create, setCreateStatus] = useState(false);
   const [expire, setExpire] = useState(false);
+  const [expireDate, setExpireDate] = useState(null);
+  const [linkValue, setLinkValue] = useState(null);
+  const [longUrl, setLongUrl] = useState('');
+
+  const [validate, setValidate] = useState(false);
+
+  useEffect(() => {
+    if ((expire && !expireDate) || !longUrl) {
+      setValidate(false);
+    } else {
+      setValidate(true);
+    }
+  }, [create, expire, expireDate, linkValue, longUrl]);
+
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  }
+    // console.log(date, dateString);
+    setExpireDate(dateString);
+  };
+
+  const submit = () => {
+    props.createNewShortUrl({
+      long_url: longUrl,
+      will_expire: expireDate,
+      link_value: linkValue
+    })
+    setCreateStatus(false)
+    setExpire(false)
+    setExpireDate(null)
+    setLinkValue(null)
+    setLongUrl('')
+    setValidate(false)
+  };
 
   return (
     <>
@@ -43,11 +78,15 @@ function CreateModal() {
                   className='bg-orange-900 bg-opacity-10 theme-rounded w-full py-2 px-10 placeholder-orange-900 text-orange-900 font-bold focus:bg-opacity-20'
                   type='text'
                   placeholder='Paste your long URL here...'
+                  value={longUrl}
+                  autoFocus
+                  onChange={(e) => setLongUrl(e.target.value)}
                 />
                 <label class='mt-2 block text-gray-500 font-bold'>
                   <input
                     class='mr-2 leading-tight'
                     type='checkbox'
+                    value={expire}
                     onClick={(e) => setExpire(e.target.checked)}
                   />
                   <span class='text-sm'>I want this link to expire</span>
@@ -56,7 +95,9 @@ function CreateModal() {
                   className='my-3'
                   placeholder='Set link value per visitor.'
                   min={0}
-                  prefix={<FontAwesomeIcon icon={faDollarSign}/>}
+                  prefix={<FontAwesomeIcon icon={faDollarSign} />}
+                  onChange={(e) => setLinkValue(e.target.value)}
+                  defaultValue={linkValue}
                   type='number'
                 />
                 {expire ? (
@@ -64,29 +105,26 @@ function CreateModal() {
                     className='w-full'
                     placeholder='Set expire date'
                     onChange={onChange}
+                    defaultValue={expireDate}
                   />
                 ) : null}
               </div>
             </div>
             <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
               <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
-                <button
-                  type='button'
-                  className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base leading-6 font-medium text-white shadow-sm hover:bg-orange-900 focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5'
-                >
-                  Create
-                </button>
-              </span>
-              <span className='mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto'>
-                <button
-                  onClick={() => {
-                    setCreateStatus(false);
-                  }}
-                  type='button'
-                  className='inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-orange-900-300 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5'
-                >
-                  Cancel
-                </button>
+                {validate ? (
+                  <button
+                    type='button'
+                    className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base leading-6 font-medium text-white shadow-sm hover:bg-orange-900 focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5'
+                    onClick={() => submit()}
+                  >
+                    Create
+                  </button>
+                ) : (
+                  <button className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base bg-opacity-50 leading-6 font-medium text-white shadow-sm hover:bg-orange-900 focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5 cursor-not-allowed'>
+                    Create
+                  </button>
+                )}
               </span>
             </div>
           </div>
@@ -96,4 +134,6 @@ function CreateModal() {
   );
 }
 
-export default CreateModal;
+export default connect(null, { createNewShortUrl, fetchShortUrls })(
+  CreateModal
+);
