@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { faPlusSquare, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusSquare , faDollarSign} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon, } from '@fortawesome/react-fontawesome';
+import { DatePicker, Input } from 'antd';
 
 function CreateModal() {
   const [create, setCreateStatus] = useState(false);
+  const [expire, setExpire] = useState(false);
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
 
   return (
     <>
@@ -39,6 +44,28 @@ function CreateModal() {
                   type='text'
                   placeholder='Paste your long URL here...'
                 />
+                <label class='mt-2 block text-gray-500 font-bold'>
+                  <input
+                    class='mr-2 leading-tight'
+                    type='checkbox'
+                    onClick={(e) => setExpire(e.target.checked)}
+                  />
+                  <span class='text-sm'>I want this link to expire</span>
+                </label>
+                <Input
+                  className='my-3'
+                  placeholder='Set link value per visitor.'
+                  min={0}
+                  prefix={<FontAwesomeIcon icon={faDollarSign}/>}
+                  type='number'
+                />
+                {expire ? (
+                  <DatePicker
+                    className='w-full'
+                    placeholder='Set expire date'
+                    onChange={onChange}
+                  />
+                ) : null}
               </div>
             </div>
             <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
