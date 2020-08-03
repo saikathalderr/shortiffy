@@ -8,6 +8,7 @@ exports.createNewLink = async (req, res) => {
   try {
     const long_url = req.query.long_url;
     const will_expire = req.query.will_expire;
+    const link_value = req.query.link_value;
     if (!long_url) throw new Error(`No URL found to shorten.`);
     if (!isUrl(long_url)) throw new Error(`URL is invalid`);
     if (will_expire) {
@@ -15,6 +16,9 @@ exports.createNewLink = async (req, res) => {
         throw new Error(`Expire date is invalid 😢`);
       if (!validator.isAfter(will_expire))
         throw new Error(`Expire date should be after today, LOL 😆`);
+    }
+    if(link_value) {
+      if(!validator.isNumeric(link_value) || link_value < 0) throw new Error(`The link value should be number 😥`) 
     }
 
     const url_crypto = cryptoRandomString({ length: 7, type: 'base64' });
@@ -24,6 +28,7 @@ exports.createNewLink = async (req, res) => {
       long_url: long_url,
       will_expire: will_expire ? will_expire : 'life_time',
       created_by: req.user.data._id,
+      link_value: link_value ? link_value : 0,
     });
     new_link
       .save()

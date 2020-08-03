@@ -14,6 +14,10 @@ const Link = new mongoose.Schema(
       type: String,
       required: false,
     },
+    link_value: {
+      type: Number,
+      default: 0,
+    },
     created_by: {
       type: String,
       required: [true, 'Created by is required'],
