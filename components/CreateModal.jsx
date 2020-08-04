@@ -82,14 +82,14 @@ function CreateModal(props) {
                   autoFocus
                   onChange={(e) => setLongUrl(e.target.value)}
                 />
-                <label class='mt-2 block text-gray-500 font-bold'>
+                <label className='mt-2 block text-gray-500 font-bold'>
                   <input
-                    class='mr-2 leading-tight'
+                    className='mr-2 leading-tight'
                     type='checkbox'
                     value={expire}
                     onClick={(e) => setExpire(e.target.checked)}
                   />
-                  <span class='text-sm'>I want this link to expire</span>
+                  <span className='text-sm'>I want this link to expire</span>
                 </label>
                 <Input
                   className='my-3'
