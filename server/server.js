@@ -8,6 +8,7 @@ let whitelist = ['http://localhost:3000'];
 
 const linkRoutes = require('./link.routes');
 const userRoutes = require('./user.routes');
+const { redirectShortLink } = require('./controller/link.controller');
 
 require('dotenv').config();
 app.use(
@@ -30,7 +31,7 @@ app.use(
 
 const port = process.env.PORT || 8000;
 
-app.get('/', (req, res) => res.send('Hello welcome to Shortiffy!'));
+app.get('/:url_crypto', redirectShortLink);
 app.use('/link', linkRoutes);
 app.use('/user', userRoutes);
 

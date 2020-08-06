@@ -74,3 +74,21 @@ exports.getShortLinks = async (req, res) => {
     });
   }
 };
+
+exports.redirectShortLink = async (req,res) => {
+  try {
+    const url_crypto = req.params.url_crypto
+    if (!url_crypto) res.redirect(process.env.CLIENT_URL);
+
+    const link = await Link.findOne({'url_crypto' : url_crypto})
+    if (!link) res.redirect(process.env.CLIENT_URL);
+    
+    res.redirect(link.long_url);
+
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+}
