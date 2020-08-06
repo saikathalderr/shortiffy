@@ -1,4 +1,5 @@
 const express = require('express');
+const requestIp = require('request-ip');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -28,6 +29,12 @@ app.use(
     },
   })
 );
+app.use(requestIp.mw());
+app.use(function (req, res,next) {
+  const ip = req.clientIp;
+  req.ipData = ip
+  next()
+});
 
 const port = process.env.PORT || 8000;
 
