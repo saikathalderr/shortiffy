@@ -15,6 +15,7 @@ function CreateModal(props) {
   const [expireDate, setExpireDate] = useState(null);
   const [linkValue, setLinkValue] = useState(null);
   const [longUrl, setLongUrl] = useState('');
+  const [customLink, setcustomLink] = useState('');
 
   const [validate, setValidate] = useState(false);
 
@@ -35,7 +36,8 @@ function CreateModal(props) {
     props.createNewShortUrl({
       long_url: longUrl,
       will_expire: expireDate,
-      link_value: linkValue
+      link_value: linkValue,
+      custom_link_name: customLink ? customLink : null
     })
     setCreateStatus(false)
     setExpire(false)
@@ -43,6 +45,7 @@ function CreateModal(props) {
     setLinkValue(null)
     setLongUrl('')
     setValidate(false)
+    setcustomLink('')
   };
 
   return (
@@ -82,15 +85,21 @@ function CreateModal(props) {
                   autoFocus
                   onChange={(e) => setLongUrl(e.target.value)}
                 />
-                <label className='mt-2 block text-gray-500 font-bold'>
-                  <input
-                    className='mr-2 leading-tight'
-                    type='checkbox'
-                    value={expire}
-                    onClick={(e) => setExpire(e.target.checked)}
-                  />
-                  <span className='text-sm'>I want this link to expire</span>
-                </label>
+
+                <Input
+                  placeholder='Set a custome url for the short link'
+                  onChange={(e) => setcustomLink(e.target.value)}
+                  defaultValue={customLink}
+                  className='mt-3'
+                />
+                {
+                  customLink.length ? <Input
+                    placeholder='Set a custom name for the short link'
+                    value={`https://shr.fy/${customLink}`}
+                    className='mt-3'
+                    readOnly
+                  /> : null
+                }
                 <Input
                   className='my-3'
                   placeholder='Set link value per visitor.'
@@ -100,9 +109,18 @@ function CreateModal(props) {
                   defaultValue={linkValue}
                   type='number'
                 />
+                <label className='mt-2 block text-gray-500 font-bold'>
+                  <input
+                    className='mr-2 leading-tight'
+                    type='checkbox'
+                    value={expire}
+                    onClick={(e) => setExpire(e.target.checked)}
+                  />
+                  <span className='text-sm'>I want this link to expire</span>
+                </label>
                 {expire ? (
                   <DatePicker
-                    className='w-full'
+                    className='w-full mt-3'
                     placeholder='Set expire date'
                     onChange={onChange}
                     defaultValue={expireDate}
@@ -121,7 +139,7 @@ function CreateModal(props) {
                     Create
                   </button>
                 ) : (
-                  <button className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base bg-opacity-50 leading-6 font-medium text-white shadow-sm hover:bg-orange-900 focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5 cursor-not-allowed'>
+                  <button disabled className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base bg-opacity-50 leading-6 font-medium text-white shadow-sm focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5 cursor-not-allowed'>
                     Create
                   </button>
                 )}

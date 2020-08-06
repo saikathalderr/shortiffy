@@ -6,6 +6,11 @@ const Link = new mongoose.Schema(
       type: String,
       required: [true, 'Short URL is required'],
     },
+    url_crypto: {
+      type: String,
+      required: [true, 'URL crypto is required'],
+      unique: true,
+    },
     long_url: {
       type: String,
       required: [true, 'Long URL is required'],
