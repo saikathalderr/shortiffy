@@ -36,22 +36,42 @@ export const fetchShortUrls = () => (dispatch) => {
 };
 
 export const createNewShortUrl = (data) => (dispatch) => {
-    axios({
-      method: 'POST',
-      url: `${API_URL}/link/create`,
-      data: data,
-      validateStatus: (status) => {
-        return true;
-      },
+  axios({
+    method: 'POST',
+    url: `${API_URL}/link/create`,
+    data: data,
+    validateStatus: (status) => {
+      return true;
+    },
+  })
+    .catch((err) => {
+      return console.log(err);
     })
-      .catch((err) => {
-        return console.log(err);
-      })
-      .then((res) => {
-        if (res.data.status === 'success') {
-          dispatch(fetchShortUrls());
-        } else {
-          return toast.error(res.data.message);
-        }
-      });
-}
+    .then((res) => {
+      if (res.data.status === 'success') {
+        dispatch(fetchShortUrls());
+      } else {
+        return toast.error(res.data.message);
+      }
+    });
+};
+
+export const deleteShortUrl = (id) => (dispatch) => {
+  axios({
+    method: 'DELETE',
+    url: `${API_URL}/link/delete/${id}`,
+    validateStatus: (status) => {
+      return true;
+    },
+  })
+    .catch((err) => {
+      return console.log(err);
+    })
+    .then((res) => {
+      if (res.data.status === 'success') {
+        dispatch(fetchShortUrls());
+      } else {
+        return toast.error(res.data.message);
+      }
+    });
+};

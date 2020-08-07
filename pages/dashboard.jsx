@@ -17,6 +17,8 @@ function dashboard() {
   useEffect(() => {
     if (query.analyze) {
       setLinkSelected(true);
+    } else {
+      setLinkSelected(false);
     }
   }, [query]);
 

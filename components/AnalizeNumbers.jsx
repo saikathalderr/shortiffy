@@ -9,11 +9,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { useRouter } from 'next/router'
+
 import TrafficChart from '../components/TrafficChart';
 import CountryChart from '../components/CountryChart';
 import DeleteModal from '../components/DeleteModal';
+import { useEffect } from 'react';
 
 function AnalizeNumbers() {
+    const router = useRouter();
+    const { query } = router;
+
+    useEffect(() => {
+      console.log(query);
+    }, [query.analyze]);
+
   return (
     <>
       <div className='p-10'>
@@ -23,7 +33,7 @@ function AnalizeNumbers() {
               Shortiffy Analytics
             </span>
             <span className='float-right'>
-              <DeleteModal />
+              <DeleteModal analyzeID={query.analyze} />
               {/* <button className='bg-blue bg-opacity-0 hover:bg-opacity-10 text-blue font-bold py-2 px-5 rounded text-xs theme-font-montserrat-black'>
                 <FontAwesomeIcon icon={faCog} className='mr-2' />
                 Options

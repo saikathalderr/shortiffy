@@ -112,3 +112,33 @@ exports.redirectShortLink = async (req, res) => {
     });
   }
 };
+
+exports.deleteLink = async (req, res) => {
+  try {
+    const linkId = req.params.id;
+    const link = await Link.findById(linkId);
+    if (!link) throw new Error(`No like found with the ID of ${linkId}`);
+    if (req.user.data._id !== link.created_by)
+      throw new Error(`You are not authorized for this request 🔒`);
+      
+    link
+      .deleteOne()
+      .then(() => {
+        return res.status(201).json({
+          status: 'success',
+          message: 'Short link deleted successfully 😛',
+        });
+      })
+      .catch((err) => {
+        return res.status(500).json({
+          status: 'error',
+          message: err.message,
+        });
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};

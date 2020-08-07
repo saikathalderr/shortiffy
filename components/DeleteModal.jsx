@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
-import { faTrashAlt, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router'
+import {
+  faTrashAlt,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function DeleteModal() {
-  const [deleteLink, setdeleteLink] = useState(false);
+import { connect } from 'react-redux';
 
+import { deleteShortUrl } from '../store/actions/shortUrlAction';
+
+function DeleteModal(props) {
+  const router = useRouter()
+  const [deleteLink, setdeleteLink] = useState(false);
+  const deleteFun = () => {
+    router.push('/dashboard');
+    props.deleteShortUrl(props.analyzeID);
+    setdeleteLink(false);
+  };
   return (
     <>
       <button
@@ -21,9 +34,7 @@ function DeleteModal() {
           <div className='fixed inset-0 transition-opacity'>
             <div
               className='absolute inset-0 bg-gray-900 opacity-50'
-              onClick={() => {
-                setdeleteLink(false);
-              }}
+              onClick={() => setdeleteLink(false)}
             ></div>
           </div>
           <div
@@ -35,7 +46,10 @@ function DeleteModal() {
             <div className='bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
               <div className='sm:flex sm:items-start'>
                 <div className='mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10'>
-                  <FontAwesomeIcon icon={faExclamationTriangle} className='text-red'/>
+                  <FontAwesomeIcon
+                    icon={faExclamationTriangle}
+                    className='text-red'
+                  />
                 </div>
                 <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
                   <h3
@@ -59,6 +73,7 @@ function DeleteModal() {
                 <button
                   type='button'
                   className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red text-base leading-6 font-medium text-white shadow-sm hover:bg-red focus:outline-none focus:border-red focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5'
+                  onClick={deleteFun}
                 >
                   Delete
                 </button>
@@ -82,4 +97,4 @@ function DeleteModal() {
   );
 }
 
-export default DeleteModal;
+export default connect(null, { deleteShortUrl })(DeleteModal);
