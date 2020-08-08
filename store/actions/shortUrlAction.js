@@ -1,4 +1,9 @@
-import { FETCH_SHORT_LINKS, FETCHING_SHORT_LINKS } from './types';
+import {
+  FETCH_SHORT_LINKS,
+  FETCHING_SHORT_LINKS,
+  FETCH_SHORT_LINK,
+  FETCHING_SHORT_LINK,
+} from './types';
 import axios from 'axios';
 import { API_URL, FETCH_TIME } from '../../config';
 import { toast } from 'react-toastify';
@@ -26,6 +31,32 @@ export const fetchShortUrls = () => (dispatch) => {
         setTimeout(() => {
           dispatch({
             type: FETCH_SHORT_LINKS,
+            payload: res.data.data,
+          });
+        }, FETCH_TIME);
+      } else {
+        return toast.error(res.data.message);
+      }
+    });
+};
+
+export const fetchShortUrlById = (linkID) => (dispatch) => {
+  dispatch({ type: FETCHING_SHORT_LINK });
+  axios({
+    method: 'GET',
+    url: `${API_URL}/link/getLinkById/${linkID}`,
+    validateStatus: (status) => {
+      return true;
+    },
+  })
+    .catch((err) => {
+      return console.log(err);
+    })
+    .then((res) => {
+      if (res.data.status === 'success') {
+        setTimeout(() => {
+          dispatch({
+            type: FETCH_SHORT_LINK,
             payload: res.data.data,
           });
         }, FETCH_TIME);

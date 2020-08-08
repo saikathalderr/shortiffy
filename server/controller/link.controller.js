@@ -68,11 +68,34 @@ exports.createNewLink = async (req, res) => {
 exports.getShortLinks = async (req, res) => {
   try {
     const userID = req.user.data._id;
-    const links = await Link.find({ created_by: userID }, { analyze_data : 0 }).sort('-createdAt');
+    const links = await Link.find(
+      { created_by: userID },
+      { analyze_data: 0 }
+    ).sort('-createdAt');
 
     return res.status(200).json({
       status: 'success',
       data: links,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+exports.getShortLinkById = async (req, res) => {
+  try {
+    const linkID = req.params.id;
+    const userID = req.user.data._id;
+    if (!linkID) throw new Error(`ID not found to get link 😣`);
+    const link = await Link.findOne({ _id: linkID, created_by: userID });
+    if (!link) throw new Error(`No link found with the ID of ${linkID}`)
+
+    return res.status(200).json({
+      status: 'success',
+      data: link,
     });
   } catch (error) {
     return res.status(500).json({

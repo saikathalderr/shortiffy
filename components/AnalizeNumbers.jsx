@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   faCaretUp,
   faUsers,
@@ -6,23 +7,37 @@ import {
   faExchangeAlt,
   faUserPlus,
   faCalendarDay,
+  faClock,
+  faCopy,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy as faCopyOutline } from '@fortawesome/free-regular-svg-icons';
 
-import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Skeleton from 'react-loading-skeleton';
+
+import { connect } from 'react-redux';
+import { fetchShortUrlById } from '../store/actions/shortUrlAction';
 
 import TrafficChart from '../components/TrafficChart';
 import CountryChart from '../components/CountryChart';
 import DeleteModal from '../components/DeleteModal';
-import { useEffect } from 'react';
+import Moment from 'react-moment';
+import { message } from 'antd';
 
-function AnalizeNumbers() {
-    const router = useRouter();
-    const { query } = router;
+function AnalizeNumbers(props) {
+  const [copy, setcopy] = useState(false);
+  const router = useRouter();
+  const { query } = router;
 
-    useEffect(() => {
-      console.log(query);
-    }, [query.analyze]);
+  const close = () => {
+    router.push('/dashboard');
+  };
+
+  useEffect(() => {
+    if (query.analyze) {
+      props.fetchShortUrlById(query.analyze);
+    }
+  }, [query.analyze]);
 
   return (
     <>
@@ -33,28 +48,76 @@ function AnalizeNumbers() {
               Shortiffy Analytics
             </span>
             <span className='float-right'>
-              <DeleteModal analyzeID={query.analyze} />
+              {props.isLoading || !props.link ? (
+                <Skeleton height={34} width={200} />
+              ) : (
+                <>
+                  <button
+                    className='bg-blue bg-opacity-0 hover:bg-opacity-10 text-blue font-bold py-2 px-5 rounded text-xs theme-font-montserrat-black'
+                    onClick={close}
+                  >
+                    Close
+                  </button>
+                  <DeleteModal analyzeID={query.analyze} />
+                </>
+              )}
               {/* <button className='bg-blue bg-opacity-0 hover:bg-opacity-10 text-blue font-bold py-2 px-5 rounded text-xs theme-font-montserrat-black'>
                 <FontAwesomeIcon icon={faCog} className='mr-2' />
                 Options
               </button> */}
             </span>
           </div>
-          <input
-            readOnly={true}
-            value='https://shr.fy/2OR5pt9'
-            className='w-full font-bold text-base text-black bg-transparent'
-          />
-          <input
-            readOnly={true}
-            value='https://www.amazon.in/Low-Price-With-Free-Shipping/bbp?category=/mens&pf_rd_r=DZS1ZWW3V9A85TZ5XEHK&pf_rd_p=8f29f872-c954-480b-bc95-6a373f7e690f'
-            className='w-1/2 text-xs text-gray-400 bg-transparent truncate'
-          />
+          {props.isLoading || !props.link ? (
+            <Skeleton height={21} />
+          ) : (
+            <>
+              <div className='w-full'>
+                <input
+                  readOnly={true}
+                  value={props.link.short_url}
+                  className='font-bold text-base text-black bg-transparent'
+                />
+                <button>
+                  <FontAwesomeIcon
+                    icon={copy ? faCopy : faCopyOutline}
+                    className='ml-2 text-gray-500'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setcopy(!copy);
+                      navigator.clipboard.writeText(props.link.short_url);
+                      message.info('Link Copied!');
+                      setTimeout(() => {
+                        setcopy(false);
+                      }, 2000);
+                    }}
+                  />
+                </button>
+              </div>
+            </>
+          )}
+          {props.isLoading || !props.link ? (
+            <Skeleton height={15} />
+          ) : (
+            <input
+              readOnly={true}
+              value={props.link.long_url}
+              className='w-1/2 text-xs text-gray-400 bg-transparent truncate'
+            />
+          )}
+
           <br />
-          <span className='text-xs font-bold text-gray-400'>
-            <FontAwesomeIcon icon={faCalendarDay} className='mr-2' />
-            24-07-2020 &nbsp;-&nbsp; Saikat Halder
-          </span>
+
+          {props.isLoading || !props.link ? (
+            <Skeleton height={15} width={200} />
+          ) : (
+            <span className='text-xs font-bold text-gray-400'>
+              <FontAwesomeIcon icon={faCalendarDay} className='mr-2' />
+              <Moment format='YYYY-MM-DD'>{props.link.createdAt}</Moment>
+              &nbsp;&nbsp;-&nbsp;&nbsp;
+              <FontAwesomeIcon icon={faClock} className='mr-2' />
+              <Moment format='HH:MM A'>{props.link.createdAt}</Moment>
+            </span>
+          )}
         </div>
         <div className='flex w-full gap-5'>
           <div className='w-1/3'>
@@ -122,4 +185,8 @@ function AnalizeNumbers() {
   );
 }
 
-export default AnalizeNumbers;
+function mapStateToProps(state) {
+  const { shortURLS } = state;
+  return { link: shortURLS.link, isLoading: shortURLS.isLinkLoading };
+}
+export default connect(mapStateToProps, { fetchShortUrlById })(AnalizeNumbers);
