@@ -9,6 +9,7 @@ import {
   faCalendarDay,
   faClock,
   faCopy,
+  faSync
 } from '@fortawesome/free-solid-svg-icons';
 import { faCopy as faCopyOutline } from '@fortawesome/free-regular-svg-icons';
 
@@ -33,6 +34,10 @@ function AnalizeNumbers(props) {
     router.push('/dashboard');
   };
 
+  const reload = () => {
+    props.fetchShortUrlById(query.analyze);
+  };
+
   useEffect(() => {
     if (query.analyze) {
       props.fetchShortUrlById(query.analyze);
@@ -53,11 +58,18 @@ function AnalizeNumbers(props) {
               ) : (
                 <>
                   <button
-                    className='bg-blue bg-opacity-0 hover:bg-opacity-10 text-blue font-bold py-2 px-5 rounded text-xs theme-font-montserrat-black'
+                    className='bg-blue bg-opacity-5 hover:bg-opacity-10 text-blue font-bold mx-2 py-2 px-5 rounded text-xs theme-font-montserrat-black'
+                    onClick={reload}
+                  >
+                    <FontAwesomeIcon icon={faSync} className='mr-2' />
+                    Reload
+                  </button>
+                  {/* <button
+                    className='bg-black bg-opacity-0 hover:bg-opacity-10 text-black font-bold py-2 px-5 rounded text-xs theme-font-montserrat-black'
                     onClick={close}
                   >
                     Close
-                  </button>
+                  </button> */}
                   <DeleteModal analyzeID={query.analyze} />
                 </>
               )}
@@ -85,7 +97,7 @@ function AnalizeNumbers(props) {
                       e.stopPropagation();
                       setcopy(!copy);
                       navigator.clipboard.writeText(props.link.short_url);
-                      message.info('Link Copied!');
+                      message.info('Link Copied, share with anyone you want');
                       setTimeout(() => {
                         setcopy(false);
                       }, 2000);
@@ -132,7 +144,7 @@ function AnalizeNumbers(props) {
               </span>
               <br />
               <span className='theme-font-montserrat-extra-bold text-gray-400 text-md'>
-                Link value
+                Your Link value
               </span>
             </div>
           </div>
