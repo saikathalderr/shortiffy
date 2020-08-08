@@ -28,7 +28,7 @@ function dashboard() {
         <Sider
           breakpoint='lg'
           collapsedWidth='0'
-          width={350}
+          width={400}
           theme={'light'}
           className='shadow-lg rounded-r-lg'
           onBreakpoint={(broken) => {

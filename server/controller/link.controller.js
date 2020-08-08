@@ -104,6 +104,8 @@ exports.redirectShortLink = async (req, res) => {
           res.redirect(link.long_url);
           console.log(err.message);
         });
+    } else {
+      res.redirect(link.long_url);
     }
   } catch (error) {
     return res.status(500).json({
@@ -120,7 +122,7 @@ exports.deleteLink = async (req, res) => {
     if (!link) throw new Error(`No like found with the ID of ${linkId}`);
     if (req.user.data._id !== link.created_by)
       throw new Error(`You are not authorized for this request 🔒`);
-      
+
     link
       .deleteOne()
       .then(() => {

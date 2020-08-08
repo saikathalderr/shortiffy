@@ -4,7 +4,7 @@ import { faCopy as faCopyOutline } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'react-moment';
 import { useRouter } from 'next/router';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
 function Links(props) {
   const router = useRouter();
@@ -15,8 +15,8 @@ function Links(props) {
       <div
         className={
           analyzeID === props.linkData._id
-            ? 'w-full rounded overflow-hidden p-3 my-3 bg-white link-container bg-gray-200'
-            : 'w-full rounded overflow-hidden p-3 my-3 bg-white link-container cursor-pointer hover:bg-gray-100'
+            ? 'w-full rounded overflow-hidden p-2 my-2 bg-white link-container bg-gray-200'
+            : 'w-full rounded overflow-hidden p-2 my-2 bg-white link-container cursor-pointer hover:bg-gray-100'
         }
         onClick={() => {
           router.push(`/dashboard?analyze=${props.linkData._id}`);
@@ -33,25 +33,31 @@ function Links(props) {
           </span>
         </div>
 
-        <div className='flex'>
+        <div className='flex my-1'>
           <button>
             <FontAwesomeIcon
               icon={copy ? faCopy : faCopyOutline}
+              size='lg'
               className='flex-1 text-gray-500'
               onClick={(e) => {
                 e.stopPropagation();
                 setcopy(!copy);
+                navigator.clipboard.writeText(props.linkData.short_url);
+                message.info('Link Copied!');
                 setTimeout(() => {
                   setcopy(false);
                 }, 2000);
               }}
             />
           </button>
-          <input
+          <div className='flex-1 font-bold text-xs text-black bg-transparent ml-2 mt-1'>
+            {props.linkData.short_url}
+          </div>
+          {/* <input
             readOnly={true}
             value={props.linkData.short_url}
             className='flex-1 font-bold text-xs text-black bg-transparent ml-2'
-          />
+          /> */}
           {/* <Button
             type='text'
             danger

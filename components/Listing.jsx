@@ -9,6 +9,7 @@ import CreateLink from '../components/CreateModal';
 import { connect } from 'react-redux';
 import { fetchShortUrls } from '../store/actions/shortUrlAction';
 import Skeleton from 'react-loading-skeleton';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 function Listing(props) {
   useEffect(() => {
@@ -37,18 +38,27 @@ function Listing(props) {
               type='text'
               placeholder='🔍 Search by short link, long link, date'
             />
-            <div className='py-5'>
+            <div
+              className='my-5'
+              style={{
+                overflow: 'hidden',
+                height: `calc(100vh - 250px)`,
+                left: 0,
+              }}
+            >
+              <Scrollbars height={'100%'}>
               {props.isLoading ? (
                 <>
-                {[1,2,3,4].map(e => {
-                  return <Skeleton key={e} height={80} />;
-                })}
+                  {[1, 2, 3, 4].map((e) => {
+                    return <Skeleton key={e} height={80} />;
+                  })}
                 </>
               ) : props.links.length ? (
-                props.links.map(link => {
+                props.links.map((link) => {
                   return <Links key={link._id} linkData={link} />;
                 })
               ) : null}
+              </Scrollbars>
             </div>
           </div>
         </div>
