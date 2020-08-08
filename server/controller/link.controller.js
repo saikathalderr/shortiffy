@@ -68,7 +68,7 @@ exports.createNewLink = async (req, res) => {
 exports.getShortLinks = async (req, res) => {
   try {
     const userID = req.user.data._id;
-    const links = await Link.find({ created_by: userID }).sort('-createdAt');
+    const links = await Link.find({ created_by: userID }, { analyze_data : 0 }).sort('-createdAt');
 
     return res.status(200).json({
       status: 'success',
