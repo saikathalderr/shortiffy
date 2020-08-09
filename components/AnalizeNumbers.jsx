@@ -80,19 +80,14 @@ function AnalizeNumbers(props) {
             </span>
           </div>
           {props.isLoading || !props.link ? (
-            <Skeleton height={21} />
+            <Skeleton height={21} width={250} />
           ) : (
             <>
-              <div className='w-full'>
-                <input
-                  readOnly={true}
-                  value={props.link.short_url}
-                  className='font-bold text-base text-black bg-transparent'
-                />
-                <button>
+              <div className='flex w-full'>
+                <button className='flex-initial mr-2'>
                   <FontAwesomeIcon
                     icon={copy ? faCopy : faCopyOutline}
-                    className='ml-2 text-gray-500'
+                    className='text-gray-500'
                     onClick={(e) => {
                       e.stopPropagation();
                       setcopy(!copy);
@@ -104,6 +99,11 @@ function AnalizeNumbers(props) {
                     }}
                   />
                 </button>
+                <input
+                  readOnly={true}
+                  value={props.link.short_url}
+                  className='font-bold text-base text-black bg-transparent flex-1'
+                />
               </div>
             </>
           )}
