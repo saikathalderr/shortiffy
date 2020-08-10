@@ -155,7 +155,6 @@ exports.redirectShortLink = async (req, res) => {
     const link = await Link.findOne({ url_crypto: url_crypto });
     if (!link) res.redirect(process.env.CLIENT_URL);
     if (!ip) res.redirect(link.long_url);
-    console.log({ url_crypto, ip });
 
     const hasIP = await Link.findOne({
       url_crypto: url_crypto,
