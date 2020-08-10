@@ -1,5 +1,5 @@
 const express = require('express');
-const requestIp = require('request-ip');
+// const requestIp = require('request-ip');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -9,7 +9,7 @@ let whitelist = ['http://localhost:3000'];
 
 const linkRoutes = require('./link.routes');
 const userRoutes = require('./user.routes');
-const { redirectShortLink } = require('./controller/link.controller');
+const { getIpData } = require('./controller/link.controller');
 
 require('dotenv').config();
 app.use(
@@ -29,16 +29,16 @@ app.use(
     },
   })
 );
-app.use(requestIp.mw());
-app.use(function (req, res,next) {
-  const ip = req.clientIp;
-  req.ipData = ip
-  next()
-});
+// app.use(requestIp.mw());
+// app.use(function (req, res,next) {
+//   const ip = req.clientIp;
+//   req.ipData = ip
+//   next()
+// });
 
 const port = process.env.PORT || 8000;
 
-app.get('/:url_crypto', redirectShortLink);
+app.get('/:url_crypto', getIpData);
 app.use('/link', linkRoutes);
 app.use('/user', userRoutes);
 

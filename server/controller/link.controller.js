@@ -2,6 +2,7 @@ const isUrl = require('is-url');
 const geoip = require('geoip-lite');
 const cryptoRandomString = require('crypto-random-string');
 const validator = require('validator');
+const mongoose = require('mongoose');
 
 const Link = require('../model/link.modal');
 
@@ -91,7 +92,7 @@ exports.getShortLinkById = async (req, res) => {
     const userID = req.user.data._id;
     if (!linkID) throw new Error(`ID not found to get link 😣`);
     const link = await Link.findOne({ _id: linkID, created_by: userID });
-    if (!link) throw new Error(`No link found with the ID of ${linkID}`)
+    if (!link) throw new Error(`No link found with the ID of ${linkID}`);
 
     return res.status(200).json({
       status: 'success',
@@ -105,30 +106,81 @@ exports.getShortLinkById = async (req, res) => {
   }
 };
 
+exports.analyzeLink = async (req, res) => {
+  try {
+    const linkID = req.params.id;
+    const userID = req.user.data._id;
+
+    if (!linkID) throw new Error(`No ID found to analyze link 😥`);
+    const hasLink = await Link.findOne(
+      { _id: linkID, created_by: userID },
+      { _id: 1 }
+    );
+    if (!hasLink) throw new Error(`No link found with the ID of ${linkID}`);
+
+    const link_views = await Link.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(linkID) } },
+      {
+        $project: {
+          totalClick: { $size: '$analyze_data' },
+          totalAmount: {
+            $sum: { $multiply: ['$link_value', { $size: '$analyze_data' }] },
+          },
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: 'success',
+      data: link_views,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+exports.getIpData = async (req, res) => {
+  const url_crypto = req.params.url_crypto;
+  res.redirect(`${process.env.CLIENT_URL}/redirect?url_crypto=${url_crypto}`);
+};
+
 exports.redirectShortLink = async (req, res) => {
   try {
     const url_crypto = req.params.url_crypto;
+    const ip = req.query.ip;
     if (!url_crypto) res.redirect(process.env.CLIENT_URL);
-
     const link = await Link.findOne({ url_crypto: url_crypto });
     if (!link) res.redirect(process.env.CLIENT_URL);
+    if (!ip) res.redirect(link.long_url);
+    console.log({ url_crypto, ip });
 
-    const geo = geoip.lookup(req.ipData);
+    const hasIP = await Link.findOne({
+      url_crypto: url_crypto,
+      'analyze_data.IP': ip,
+    });
+    if (hasIP) res.redirect(link.long_url);
+    if (!hasIP) {
+      const geo = geoip.lookup(ip);
+      const analyze = { ...geo, IP: ip, timestamp: new Date() };
 
-    if (geo) {
-      Link.findOneAndUpdate(
-        { url_crypto: url_crypto },
-        { $push: { analyze_data: geo } }
-      )
-        .then(() => {
-          res.redirect(link.long_url);
-        })
-        .catch((err) => {
-          res.redirect(link.long_url);
-          console.log(err.message);
-        });
-    } else {
-      res.redirect(link.long_url);
+      if (geo) {
+        Link.findOneAndUpdate(
+          { url_crypto: url_crypto },
+          { $push: { analyze_data: analyze } }
+        )
+          .then(() => {
+            res.redirect(link.long_url);
+          })
+          .catch((err) => {
+            res.redirect(link.long_url);
+            console.log(err.message);
+          });
+      } else {
+        res.redirect(link.long_url);
+      }
     }
   } catch (error) {
     return res.status(500).json({
