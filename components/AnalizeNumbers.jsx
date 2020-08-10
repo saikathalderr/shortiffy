@@ -179,7 +179,7 @@ function AnalizeNumbers(props) {
               </span>
               <br />
               <span className='theme-font-montserrat-extra-bold text-gray-400 text-md'>
-                New Users
+                New Users this week
               </span>
             </div>
           </div>
