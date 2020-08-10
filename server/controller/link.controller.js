@@ -132,7 +132,7 @@ exports.analyzeLink = async (req, res) => {
 
     return res.status(200).json({
       status: 'success',
-      data: link_views,
+      data: link_views[0],
     });
   } catch (error) {
     return res.status(500).json({

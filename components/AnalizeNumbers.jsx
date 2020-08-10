@@ -9,7 +9,7 @@ import {
   faCalendarDay,
   faClock,
   faCopy,
-  faSync
+  faSync,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCopy as faCopyOutline } from '@fortawesome/free-regular-svg-icons';
 
@@ -24,6 +24,10 @@ import CountryChart from '../components/CountryChart';
 import DeleteModal from '../components/DeleteModal';
 import Moment from 'react-moment';
 import { message } from 'antd';
+
+import LinkValueCard from './LinkValueCard';
+import LinkVisitorsCard from './LinkVisitorsCard';
+import LinkWeeklyUserCard from './LinkWeeklyUserCard';
 
 function AnalizeNumbers(props) {
   const [copy, setcopy] = useState(false);
@@ -133,55 +137,16 @@ function AnalizeNumbers(props) {
         </div>
         <div className='flex w-full gap-5'>
           <div className='w-1/3'>
-            <div className='py-5 text-center border-2 border-gray-300 border-dashed hover:border-transparent hover:bg-white hover:shadow-xl theme-rounded'>
-              <button className='rounded-full h-10 w-10 bg-green bg-opacity-10'>
-                <FontAwesomeIcon icon={faMoneyBillAlt} className='text-green' />
-              </button>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-black text-4xl'>
-                $1263
-                <FontAwesomeIcon icon={faCaretUp} className='ml-2 text-green' />
-              </span>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-gray-400 text-md'>
-                Your Link value
-              </span>
-            </div>
+            <LinkValueCard data={props.linkAnalyzeData} isLoading={props.isAnalyzing} />
           </div>
           <div className='w-1/3'>
-            <div className='py-5 text-center border-2 border-gray-300 border-dashed hover:border-transparent hover:bg-white hover:shadow-xl theme-rounded'>
-              <button className='rounded-full h-10 w-10 bg-orange-900 bg-opacity-10'>
-                <FontAwesomeIcon icon={faUsers} className='text-orange-900' />
-              </button>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-black text-4xl'>
-                4850
-                <FontAwesomeIcon
-                  icon={faExchangeAlt}
-                  className='ml-2 text-yellow'
-                />
-              </span>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-gray-400 text-md'>
-                Total Visitors
-              </span>
-            </div>
+            <LinkVisitorsCard data={props.linkAnalyzeData} isLoading={props.isAnalyzing} />
           </div>
           <div className='w-1/3'>
-            <div className='py-5 text-center border-2 border-gray-300 border-dashed hover:border-transparent hover:bg-white hover:shadow-xl theme-rounded'>
-              <button className='rounded-full h-10 w-10 bg-blue bg-opacity-10'>
-                <FontAwesomeIcon icon={faUserPlus} className='text-blue' />
-              </button>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-black text-4xl'>
-                256
-                <FontAwesomeIcon icon={faCaretUp} className='ml-2 text-green' />
-              </span>
-              <br />
-              <span className='theme-font-montserrat-extra-bold text-gray-400 text-md'>
-                New Users this week
-              </span>
-            </div>
+            <LinkWeeklyUserCard
+              data={props.linkAnalyzeData}
+              isLoading={props.isAnalyzing}
+            />
           </div>
         </div>
         <div className='flex w-full gap-5 py-10'>
@@ -199,6 +164,11 @@ function AnalizeNumbers(props) {
 
 function mapStateToProps(state) {
   const { shortURLS } = state;
-  return { link: shortURLS.link, isLoading: shortURLS.isLinkLoading };
+  return {
+    link: shortURLS.link,
+    linkAnalyzeData: shortURLS.linkAnalyzeData,
+    isLoading: shortURLS.isLinkLoading,
+    isAnalyzing: shortURLS.isLinkAnalyzing,
+  };
 }
 export default connect(mapStateToProps, { fetchShortUrlById })(AnalizeNumbers);

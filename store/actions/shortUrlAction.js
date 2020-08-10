@@ -3,6 +3,8 @@ import {
   FETCHING_SHORT_LINKS,
   FETCH_SHORT_LINK,
   FETCHING_SHORT_LINK,
+  ANALYZE_SHORT_LINK,
+  ANALYZING_SHORT_LINK,
 } from './types';
 import axios from 'axios';
 import { API_URL, FETCH_TIME } from '../../config';
@@ -42,6 +44,7 @@ export const fetchShortUrls = () => (dispatch) => {
 
 export const fetchShortUrlById = (linkID) => (dispatch) => {
   dispatch({ type: FETCHING_SHORT_LINK });
+  dispatch({ type: ANALYZING_SHORT_LINK });
   axios({
     method: 'GET',
     url: `${API_URL}/link/getLinkById/${linkID}`,
@@ -59,6 +62,7 @@ export const fetchShortUrlById = (linkID) => (dispatch) => {
             type: FETCH_SHORT_LINK,
             payload: res.data.data,
           });
+          dispatch(analyzeShortLink(linkID));
         }, FETCH_TIME);
       } else {
         return toast.error(res.data.message);
@@ -87,10 +91,35 @@ export const createNewShortUrl = (data) => (dispatch) => {
     });
 };
 
-export const deleteShortUrl = (id) => (dispatch) => {
+export const analyzeShortLink = (linkID) => (dispatch) => {
+  axios({
+    method: 'GET',
+    url: `${API_URL}/link/analyzeLink/${linkID}`,
+    validateStatus: (status) => {
+      return true;
+    },
+  })
+    .catch((err) => {
+      return console.log(err);
+    })
+    .then((res) => {
+      if (res.data.status === 'success') {
+        setTimeout(() => {
+          dispatch({
+            type: ANALYZE_SHORT_LINK,
+            payload: res.data.data,
+          });
+        }, FETCH_TIME);
+      } else {
+        return toast.error(res.data.message);
+      }
+    });
+};
+
+export const deleteShortUrl = (linkID) => (dispatch) => {
   axios({
     method: 'DELETE',
-    url: `${API_URL}/link/delete/${id}`,
+    url: `${API_URL}/link/delete/${linkID}`,
     validateStatus: (status) => {
       return true;
     },
