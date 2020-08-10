@@ -130,9 +130,24 @@ exports.analyzeLink = async (req, res) => {
       },
     ]);
 
+    const week_views = await Link.findOne({
+      _id: linkID,
+      analyze_data: {
+        $elemMatch: {
+          timestamp: {
+            $gte: this.getWeek().firstday,
+            $lte: this.getWeek().lastday,
+          },
+        },
+      },
+    });
+
     return res.status(200).json({
       status: 'success',
-      data: link_views[0],
+      data: {
+        ...link_views[0],
+        totalWeekViews: week_views ? week_views.analyze_data.length : 0,
+      },
     });
   } catch (error) {
     return res.status(500).json({
@@ -218,3 +233,14 @@ exports.deleteLink = async (req, res) => {
     });
   }
 };
+
+exports.getWeek = () => {
+  var curr = new Date(); // get current date
+  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  var last = first + 6; // last day is the first day + 6
+
+  var firstday = new Date(curr.setDate(first))
+  var lastday = new Date(curr.setDate(last))
+
+  return { firstday, lastday }
+}

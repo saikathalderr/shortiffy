@@ -15,7 +15,7 @@ function LinkWeeklyUserCard(props) {
           </button>
           <br />
           <span className='theme-font-montserrat-extra-bold text-black text-4xl'>
-            256
+            {props.data.totalWeekViews}
             <FontAwesomeIcon icon={faCaretUp} className='ml-2 text-green' />
           </span>
           <br />
