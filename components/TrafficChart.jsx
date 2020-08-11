@@ -1,105 +1,112 @@
 import React, { PureComponent } from 'react';
 import {
-  LineChart,
+  ResponsiveContainer,
+  ComposedChart,
   Line,
+  Area,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from 'recharts';
+import Skeleton from 'react-loading-skeleton';
 
 const data = [
   {
     name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    uv: 590,
+    pv: 800,
+    amt: 1400,
   },
   {
     name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    uv: 868,
+    pv: 967,
+    amt: 1506,
   },
   {
     name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    uv: 1397,
+    pv: 1098,
+    amt: 989,
   },
   {
     name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    uv: 1480,
+    pv: 1200,
+    amt: 1228,
   },
   {
     name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    uv: 1520,
+    pv: 1108,
+    amt: 1100,
   },
   {
     name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    uv: 1400,
+    pv: 680,
+    amt: 1700,
   },
 ];
 
+const getMonthName = (number) => {
+  if (number >= 0) {
+    const month = new Array();
+    month[0] = 'January';
+    month[1] = 'February';
+    month[2] = 'March';
+    month[3] = 'April';
+    month[4] = 'May';
+    month[5] = 'June';
+    month[6] = 'July';
+    month[7] = 'August';
+    month[8] = 'September';
+    month[9] = 'October';
+    month[10] = 'November';
+    month[11] = 'December';
+    return month[number === 0 ? 0 : number - 1];
+  }
+};
+const monthlyCount = (data) => {
+  const monthlyData = []
+  data.data.totalMonthlyViews.forEach(el => {
+    const name = getMonthName(parseInt(el._id));
+    const newObj = {...el, name}
+    monthlyData.push(newObj);
+  });
+  console.log(monthlyData);
+  return monthlyData;
+};
 export default class Example extends PureComponent {
-  static jsfiddleUrl = 'https://jsfiddle.net/alidingling/7j5bbbum/';
+  static jsfiddleUrl = '//jsfiddle.net/alidingling/9wnuL90w/';
 
   render() {
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <ResponsiveContainer>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='name' />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type='monotone'
-              dataKey='pv'
-              stroke='#8884d8'
-              activeDot={{ r: 8 }}
-            />
-            <Line type='monotone' dataKey='uv' stroke='#82ca9d' />
-          </LineChart>
-        </ResponsiveContainer>
-        <div>
-          <div className='w-full md:w-1/3 px-3 mb-6 md:mb-0 float-right'>
-            <div className='relative'>
-              <select
-                className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
-                id='grid-state'
-              >
-                <option>Today</option>
-                <option>Last 7 Days</option>
-                <option>Last 28 Days</option>
-              </select>
-              <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
-                <svg
-                  className='fill-current h-4 w-4'
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 20 20'
-                >
-                  <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        {this.props.isLoading || !this.props.data ? (
+          <Skeleton height={200} width={'100%'} />
+        ) : (
+          <ResponsiveContainer>
+            <ComposedChart data={monthlyCount(this.props)}>
+              <CartesianGrid stroke='#f5f5f5' />
+              <XAxis dataKey='name' />
+              <YAxis />
+              {/* <Tooltip /> */}
+              {/* <Legend /> */}
+              <Area
+                type='monotone'
+                dataKey='totalClick'
+                fill='#8884d8'
+                stroke='#8884d8'
+              />
+              <Bar dataKey='totalClick' barSize={20} fill='#413ea0' />
+              <Line type='monotone' dataKey='totalClick' stroke='#ff7300' />
+            </ComposedChart>
+          </ResponsiveContainer>
+        )}
       </div>
     );
   }

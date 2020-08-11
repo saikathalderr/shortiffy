@@ -137,10 +137,16 @@ function AnalizeNumbers(props) {
         </div>
         <div className='flex w-full gap-5'>
           <div className='w-1/3'>
-            <LinkValueCard data={props.linkAnalyzeData} isLoading={props.isAnalyzing} />
+            <LinkValueCard
+              data={props.linkAnalyzeData}
+              isLoading={props.isAnalyzing}
+            />
           </div>
           <div className='w-1/3'>
-            <LinkVisitorsCard data={props.linkAnalyzeData} isLoading={props.isAnalyzing} />
+            <LinkVisitorsCard
+              data={props.linkAnalyzeData}
+              isLoading={props.isAnalyzing}
+            />
           </div>
           <div className='w-1/3'>
             <LinkWeeklyUserCard
@@ -151,10 +157,16 @@ function AnalizeNumbers(props) {
         </div>
         <div className='flex w-full gap-5 py-10'>
           <div className='w-1/2 h-64'>
-            <TrafficChart />
+            <TrafficChart
+              data={props.linkAnalyzeData}
+              isLoading={props.isAnalyzing}
+            />
           </div>
           <div className='w-1/2 h-64'>
-            <CountryChart />
+            <CountryChart
+              data={props.linkAnalyzeData}
+              isLoading={props.isAnalyzing}
+            />
           </div>
         </div>
       </div>

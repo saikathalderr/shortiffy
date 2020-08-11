@@ -142,11 +142,38 @@ exports.analyzeLink = async (req, res) => {
       },
     });
 
+    const country_count = await Link.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(linkID) } },
+      { $unwind: '$analyze_data' },
+      {
+        $group: { _id: '$analyze_data.country', visitor: { $sum: 1 } },
+      },
+      {
+        $sort: { visitor: -1 },
+      },
+    ]);
+
+    const month_count = await Link.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(linkID) } },
+      { $unwind: '$analyze_data' },
+      {
+        $group: {
+          _id: { $substr: ['$analyze_data.timestamp', 5, 2] },
+          totalClick: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+
     return res.status(200).json({
       status: 'success',
       data: {
         ...link_views[0],
         totalWeekViews: week_views ? week_views.analyze_data.length : 0,
+        totalCountryViews: country_count ? country_count : null,
+        totalMonthlyViews: month_count ? month_count : null
       },
     });
   } catch (error) {

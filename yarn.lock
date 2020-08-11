@@ -2769,6 +2769,11 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
+country-flag-icons@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/country-flag-icons/-/country-flag-icons-1.2.3.tgz#54dec908ef27e65f4c12b61ec693beabd5c01c9f"
+  integrity sha512-elftJ1Mc3TsoVpaDbotEYAdAzyM+d0r7oWS7mWY4B9OVBe2DUG2dfHB0Vv4ztE4E55NpQ1MUpjdKJlCzcb4chA==
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
