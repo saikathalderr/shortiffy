@@ -77,7 +77,6 @@ const monthlyCount = (data) => {
     const newObj = {...el, name}
     monthlyData.push(newObj);
   });
-  console.log(monthlyData);
   return monthlyData;
 };
 export default class Example extends PureComponent {
@@ -87,7 +86,7 @@ export default class Example extends PureComponent {
     return (
       <div style={{ width: '100%', height: '100%' }}>
         {this.props.isLoading || !this.props.data ? (
-          <Skeleton height={200} width={'100%'} />
+          <Skeleton height={250} width={'100%'} />
         ) : (
           <ResponsiveContainer>
             <ComposedChart data={monthlyCount(this.props)}>

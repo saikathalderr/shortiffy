@@ -46,13 +46,10 @@ export default class Example extends PureComponent {
     return (
       <div style={{ width: '100%', height: '100%' }}>
         {this.props.isLoading || !this.props.data ? (
-          <Skeleton height={200} width={'100%'} />
+          <Skeleton height={250} width={'100%'} />
         ) : (
           <ResponsiveContainer>
-            <BarChart
-              data={this.props.data.totalCountryViews}
-              barSize={20}
-            >
+            <BarChart data={this.props.data.totalCountryViews} barSize={20}>
               <CartesianGrid strokeDasharray='3 3' />
               <XAxis dataKey='_id' />
               <YAxis type='number' domain={[0, 'dataMax + 10']} />
