@@ -6,6 +6,8 @@ import '../styles/index.css';
 import { Provider } from 'react-redux';
 import store from '../store/store';
 
+import Loading from '../components/Loading'
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -16,9 +18,7 @@ export default function MyApp({ Component, pageProps }) {
             <ToastContainer />
           </Auth>
         </Provider>
-      ) : (
-        'Loading...'
-      )}
+      ) : <Loading/>}
     </>
   );
 }

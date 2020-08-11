@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import Loading from './Loading';
 
 const auth = (props) => {
   if (process.browser) {
@@ -24,7 +25,7 @@ const auth = (props) => {
     }, [router.route]);
   }
 
-  return <>{process.browser ? props.children : 'loading...'}</>;
+  return <>{process.browser ? props.children : <Loading />}</>;
 };
 
 export default auth;
