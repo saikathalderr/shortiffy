@@ -71,10 +71,10 @@ const getMonthName = (number) => {
   }
 };
 const monthlyCount = (data) => {
-  const monthlyData = []
-  data.data.totalMonthlyViews.forEach(el => {
+  const monthlyData = [];
+  data.data.totalMonthlyViews.forEach((el) => {
     const name = getMonthName(parseInt(el._id));
-    const newObj = {...el, name}
+    const newObj = { ...el, name };
     monthlyData.push(newObj);
   });
   return monthlyData;
@@ -88,23 +88,28 @@ export default class Example extends PureComponent {
         {this.props.isLoading || !this.props.data ? (
           <Skeleton height={250} width={'100%'} />
         ) : (
-          <ResponsiveContainer>
-            <ComposedChart data={monthlyCount(this.props)}>
-              <CartesianGrid stroke='#f5f5f5' />
-              <XAxis dataKey='name' />
-              <YAxis />
-              {/* <Tooltip /> */}
-              {/* <Legend /> */}
-              <Area
-                type='monotone'
-                dataKey='totalClick'
-                fill='#8884d8'
-                stroke='#8884d8'
-              />
-              <Bar dataKey='totalClick' barSize={20} fill='#413ea0' />
-              <Line type='monotone' dataKey='totalClick' stroke='#ff7300' />
-            </ComposedChart>
-          </ResponsiveContainer>
+          <>
+            <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
+              Monthly Traffic
+            </h1>
+            <ResponsiveContainer>
+              <ComposedChart data={monthlyCount(this.props)}>
+                <CartesianGrid stroke='#f5f5f5' />
+                <XAxis dataKey='name' />
+                <YAxis />
+                <Tooltip />
+                {/* <Legend /> */}
+                <Area
+                  type='monotone'
+                  dataKey='totalClick'
+                  fill='#8884d8'
+                  stroke='#8884d8'
+                />
+                <Bar dataKey='totalClick' barSize={20} fill='#413ea0' />
+                <Line type='monotone' dataKey='totalClick' stroke='#ff7300' />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </>
         )}
       </div>
     );

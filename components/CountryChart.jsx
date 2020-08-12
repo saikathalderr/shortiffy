@@ -48,19 +48,24 @@ export default class Example extends PureComponent {
         {this.props.isLoading || !this.props.data ? (
           <Skeleton height={250} width={'100%'} />
         ) : (
-          <ResponsiveContainer>
-            <BarChart data={this.props.data.totalCountryViews} barSize={20}>
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='_id' />
-              <YAxis type='number' domain={[0, 'dataMax + 10']} />
-              <Tooltip />
-              {/* <Legend /> */}
-              <Bar dataKey='visitor' fill='#8884d8'>
-                <LabelList dataKey='_id' content={renderCustomizedLabel} />
-              </Bar>
-              {/* <Bar dataKey='uv' fill='#82ca9d' /> */}
-            </BarChart>
-          </ResponsiveContainer>
+          <>
+            <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
+              Country Traffic
+            </h1>
+            <ResponsiveContainer>
+              <BarChart data={this.props.data.totalCountryViews} barSize={20}>
+                <CartesianGrid strokeDasharray='3 3' />
+                <XAxis dataKey='_id' />
+                <YAxis type='number' domain={[0, 'dataMax + 10']} />
+                <Tooltip />
+                {/* <Legend /> */}
+                <Bar dataKey='visitor' fill='#8884d8'>
+                  <LabelList dataKey='_id' content={renderCustomizedLabel} />
+                </Bar>
+                {/* <Bar dataKey='uv' fill='#82ca9d' /> */}
+              </BarChart>
+            </ResponsiveContainer>
+          </>
         )}
       </div>
     );
