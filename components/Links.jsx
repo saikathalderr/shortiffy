@@ -29,7 +29,7 @@ function Links(props) {
           </span>
           <span className='ml-3 text-xs font-bold text-gray-400'>
             <FontAwesomeIcon icon={faClock} className='mr-1' />
-            <Moment format='HH:MM A'>{props.linkData.createdAt}</Moment>
+            <Moment format='hh:mm a'>{props.linkData.createdAt}</Moment>
           </span>
         </div>
 

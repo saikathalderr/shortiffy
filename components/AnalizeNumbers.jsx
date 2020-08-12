@@ -131,7 +131,7 @@ function AnalizeNumbers(props) {
               <Moment format='YYYY-MM-DD'>{props.link.createdAt}</Moment>
               &nbsp;&nbsp;-&nbsp;&nbsp;
               <FontAwesomeIcon icon={faClock} className='mr-2' />
-              <Moment format='HH:MM A'>{props.link.createdAt}</Moment>
+              <Moment format='hh:mm a'>{props.link.createdAt}</Moment>
             </span>
           )}
         </div>
