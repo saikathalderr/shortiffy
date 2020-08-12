@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import {
   faTrashAlt,
   faExclamationTriangle,
@@ -11,8 +11,10 @@ import { connect } from 'react-redux';
 import { deleteShortUrl } from '../store/actions/shortUrlAction';
 
 function DeleteModal(props) {
-  const router = useRouter()
+  const router = useRouter();
   const [deleteLink, setdeleteLink] = useState(false);
+  const [yes, setyes] = useState('');
+
   const deleteFun = () => {
     router.push('/dashboard');
     props.deleteShortUrl(props.analyzeID);
@@ -64,20 +66,40 @@ function DeleteModal(props) {
                       data of this link will be permanently removed. This action
                       cannot be undone.
                     </p>
+                    <div className='mt-5'>
+                      <label
+                        class='block text-gray-700 text-sm font-bold mb-2 text-red'
+                        for='username'
+                      >
+                        Type YES to delete
+                      </label>
+                      <input
+                        class='appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight'
+                        id='sayYes'
+                        type='text'
+                        placeholder='Yes'
+                        autoComplete='off'
+                        value={yes}
+                        onChange={(e) => setyes(e.target.value.toUpperCase())}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
-              <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
-                <button
-                  type='button'
-                  className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red text-base leading-6 font-medium text-white shadow-sm hover:bg-red focus:outline-none focus:border-red focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5'
-                  onClick={deleteFun}
-                >
-                  Delete
-                </button>
-              </span>
+              {yes === 'YES' ? (
+                <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
+                  <button
+                    type='button'
+                    className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red text-base leading-6 font-medium text-white shadow-sm hover:bg-red focus:outline-none focus:border-red focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5'
+                    onClick={deleteFun}
+                  >
+                    Delete
+                  </button>
+                </span>
+              ) : null}
+
               <span className='mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto'>
                 <button
                   onClick={() => {
