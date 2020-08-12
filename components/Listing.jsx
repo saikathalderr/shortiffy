@@ -7,7 +7,10 @@ import Links from '../components/Links';
 import CreateLink from '../components/CreateModal';
 
 import { connect } from 'react-redux';
-import { fetchShortUrls } from '../store/actions/shortUrlAction';
+import {
+  fetchShortUrls,
+  searchShortUrls,
+} from '../store/actions/shortUrlAction';
 import Skeleton from 'react-loading-skeleton';
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -15,6 +18,14 @@ function Listing(props) {
   useEffect(() => {
     props.fetchShortUrls();
   }, []);
+
+  const search = (e) => {
+    if (e.target.value.length > 1) {
+      props.searchShortUrls(e.target.value);
+    } else {
+      props.fetchShortUrls();
+    }
+  };
   return (
     <>
       <div className='p-5 sticky top-0 z-10'>
@@ -37,6 +48,7 @@ function Listing(props) {
               className='bg-gray-100 font-bold appearance-none rounded w-full mt-3 py-3 px-5 text-xs text-black leading-tight focus:bg-white focus:outline-none focus:shadow-lg '
               type='text'
               placeholder='🔍 Search by short link, long link, date'
+              onChange={search}
             />
             <div
               className='my-5'
@@ -47,17 +59,17 @@ function Listing(props) {
               }}
             >
               <Scrollbars height={'100%'}>
-              {props.isLoading ? (
-                <>
-                  {[1, 2, 3, 4].map((e) => {
-                    return <Skeleton key={e} height={80} />;
-                  })}
-                </>
-              ) : props.links.length ? (
-                props.links.map((link) => {
-                  return <Links key={link._id} linkData={link} />;
-                })
-              ) : null}
+                {props.isLoading ? (
+                  <>
+                    {[1, 2, 3, 4].map((e) => {
+                      return <Skeleton key={e} height={80} />;
+                    })}
+                  </>
+                ) : props.links.length ? (
+                  props.links.map((link) => {
+                    return <Links key={link._id} linkData={link} />;
+                  })
+                ) : null}
               </Scrollbars>
             </div>
           </div>
@@ -71,4 +83,6 @@ function mapStateToProps(state) {
   const { shortURLS } = state;
   return { links: shortURLS.links, isLoading: shortURLS.isLoading };
 }
-export default connect(mapStateToProps, { fetchShortUrls })(Listing);
+export default connect(mapStateToProps, { fetchShortUrls, searchShortUrls })(
+  Listing
+);

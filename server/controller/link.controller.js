@@ -173,7 +173,7 @@ exports.analyzeLink = async (req, res) => {
         ...link_views[0],
         totalWeekViews: week_views ? week_views.analyze_data.length : 0,
         totalCountryViews: country_count ? country_count : null,
-        totalMonthlyViews: month_count ? month_count : null
+        totalMonthlyViews: month_count ? month_count : null,
       },
     });
   } catch (error) {
@@ -261,13 +261,42 @@ exports.deleteLink = async (req, res) => {
   }
 };
 
+exports.searchLink = async (req, res) => {
+  try {
+    const search = req.params.search;
+    if (!search) throw new Error(`Input some text to search 🤦‍♂️`);
+    const links = await Link.find(
+      {
+        created_by: req.user.data._id,
+        $or: [
+          { short_url: { $regex: search } },
+          { url_crypto: { $regex: search } },
+          { long_url: { $regex: search } },
+          { created_by: { $regex: search } },
+        ],
+      },
+      { analyze_data: 0 }
+    ).sort('-createdAt');
+
+    return res.status(200).json({
+      status: 'success',
+      data: links,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
 exports.getWeek = () => {
   var curr = new Date(); // get current date
   var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
   var last = first + 6; // last day is the first day + 6
 
-  var firstday = new Date(curr.setDate(first))
-  var lastday = new Date(curr.setDate(last))
+  var firstday = new Date(curr.setDate(first));
+  var lastday = new Date(curr.setDate(last));
 
-  return { firstday, lastday }
-}
+  return { firstday, lastday };
+};

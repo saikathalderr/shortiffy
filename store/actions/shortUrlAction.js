@@ -41,6 +41,31 @@ export const fetchShortUrls = () => (dispatch) => {
       }
     });
 };
+export const searchShortUrls = (search_text) => (dispatch) => {
+  dispatch({ type: FETCHING_SHORT_LINKS });
+  axios({
+    method: 'GET',
+    url: `${API_URL}/link/search/${search_text}`,
+    validateStatus: (status) => {
+      return true;
+    },
+  })
+    .catch((err) => {
+      return console.log(err);
+    })
+    .then((res) => {
+      if (res.data.status === 'success') {
+        setTimeout(() => {
+          dispatch({
+            type: FETCH_SHORT_LINKS,
+            payload: res.data.data,
+          });
+        }, FETCH_TIME);
+      } else {
+        return toast.error(res.data.message);
+      }
+    });
+};
 
 export const fetchShortUrlById = (linkID) => (dispatch) => {
   dispatch({ type: FETCHING_SHORT_LINK });
