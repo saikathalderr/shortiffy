@@ -136,19 +136,19 @@ function AnalizeNumbers(props) {
           )}
         </div>
         <div className='flex w-full gap-5'>
-          <div className='w-1/3'>
+          <div className='w-2/4'>
             <LinkValueCard
               data={props.linkAnalyzeData}
               isLoading={props.isAnalyzing}
             />
           </div>
-          <div className='w-1/3'>
+          <div className='w-2/4'>
             <LinkVisitorsCard
               data={props.linkAnalyzeData}
               isLoading={props.isAnalyzing}
             />
           </div>
-          <div className='w-1/3'>
+          <div className='w-3/4'>
             <LinkWeeklyUserCard
               data={props.linkAnalyzeData}
               isLoading={props.isAnalyzing}

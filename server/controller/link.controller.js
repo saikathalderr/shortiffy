@@ -130,17 +130,17 @@ exports.analyzeLink = async (req, res) => {
       },
     ]);
 
-    const week_views = await Link.findOne({
-      _id: linkID,
-      analyze_data: {
-        $elemMatch: {
-          timestamp: {
-            $gte: this.getWeek().firstday,
-            $lte: this.getWeek().lastday,
-          },
-        },
-      },
-    });
+    // const week_views = await Link.findOne({
+    //   _id: linkID,
+    //   analyze_data: {
+    //     $elemMatch: {
+    //       timestamp: {
+    //         $gte: this.getWeek().firstday,
+    //         $lte: this.getWeek().lastday,
+    //       },
+    //     },
+    //   },
+    // });
 
     const country_count = await Link.aggregate([
       { $match: { _id: mongoose.Types.ObjectId(linkID) } },
@@ -167,11 +167,29 @@ exports.analyzeLink = async (req, res) => {
       },
     ]);
 
+    const daily_count = await Link.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(linkID) } },
+      { $unwind: '$analyze_data' },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$analyze_data.timestamp" },
+            month: { $month: "$analyze_data.timestamp" },
+            day: { $dayOfMonth: "$analyze_data.timestamp" },
+          },
+          visitor: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+
     return res.status(200).json({
       status: 'success',
       data: {
         ...link_views[0],
-        totalWeekViews: week_views ? week_views.analyze_data.length : 0,
+        totalTimeViews: daily_count ? daily_count : null,
         totalCountryViews: country_count ? country_count : null,
         totalMonthlyViews: month_count ? month_count : null,
       },
