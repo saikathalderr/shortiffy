@@ -45,9 +45,9 @@ function Listing(props) {
           </div>
           <div>
             <input
-              className='bg-gray-100 font-bold appearance-none rounded w-full mt-3 py-3 px-5 text-xs text-black leading-tight focus:bg-white focus:outline-none focus:shadow-lg '
+              className='bg-gray-100 font-bold appearance-none rounded w-full mt-3 py-3 px-5 text-xs text-black leading-tight focus:bg-white focus:outline-none focus:shadow-outline'
               type='text'
-              placeholder='🔍 Search by short link, long link, date'
+              placeholder='🔍 Search by short link, long link, name'
               onChange={search}
             />
             <div
