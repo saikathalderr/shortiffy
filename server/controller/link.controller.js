@@ -216,15 +216,21 @@ exports.redirectShortLink = async (req, res) => {
     if (!link) res.redirect(process.env.CLIENT_URL);
     if (!ip) res.redirect(link.long_url);
 
+    const url = await Link.findOne({
+      url_crypto: url_crypto,
+    });
+    if (url.will_expire && validator.isBefore(url.will_expire)) {
+      return res.send(`The link is deleted by the author`);
+    }
     const hasIP = await Link.findOne({
       url_crypto: url_crypto,
       'analyze_data.IP': ip,
     });
+
     if (hasIP) res.redirect(link.long_url);
     if (!hasIP) {
       const geo = geoip.lookup(ip);
       const analyze = { ...geo, IP: ip, timestamp: new Date() };
-
       if (geo) {
         Link.findOneAndUpdate(
           { url_crypto: url_crypto },
