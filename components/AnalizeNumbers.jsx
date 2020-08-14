@@ -12,6 +12,7 @@ import {
   faSync,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCopy as faCopyOutline } from '@fortawesome/free-regular-svg-icons';
+import { Row, Col } from 'antd';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Skeleton from 'react-loading-skeleton';
@@ -135,39 +136,43 @@ function AnalizeNumbers(props) {
             </span>
           )}
         </div>
-        <div className='flex w-full gap-5'>
-          <div className='w-2/4'>
-            <LinkValueCard
-              data={props.linkAnalyzeData}
-              isLoading={props.isAnalyzing}
-            />
-          </div>
-          <div className='w-2/4'>
-            <LinkVisitorsCard
-              data={props.linkAnalyzeData}
-              isLoading={props.isAnalyzing}
-            />
-          </div>
-          <div className='w-3/4'>
-            <LinkWeeklyUserCard
-              data={props.linkAnalyzeData}
-              isLoading={props.isAnalyzing}
-            />
-          </div>
+        <div>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={6} className='max-h-24'>
+              <LinkValueCard
+                data={props.linkAnalyzeData}
+                isLoading={props.isAnalyzing}
+              />
+            </Col>
+            <Col xs={24} sm={6} className='max-h-24'>
+              <LinkVisitorsCard
+                data={props.linkAnalyzeData}
+                isLoading={props.isAnalyzing}
+              />
+            </Col>
+            <Col xs={24} sm={12} className='max-h-24'>
+              <LinkWeeklyUserCard
+                data={props.linkAnalyzeData}
+                isLoading={props.isAnalyzing}
+              />
+            </Col>
+          </Row>
         </div>
-        <div className='flex w-full gap-5 py-10'>
-          <div className='w-1/2 h-64'>
-            <TrafficChart
-              data={props.linkAnalyzeData}
-              isLoading={props.isAnalyzing}
-            />
-          </div>
-          <div className='w-1/2 h-64'>
-            <CountryChart
-              data={props.linkAnalyzeData}
-              isLoading={props.isAnalyzing}
-            />
-          </div>
+        <div>
+          <Row gutter={[16, 48]}>
+            <Col xs={24} sm={12} className='h-64'>
+              <TrafficChart
+                data={props.linkAnalyzeData}
+                isLoading={props.isAnalyzing}
+              />
+            </Col>
+            <Col xs={24} sm={12} className='h-64'>
+              <CountryChart
+                data={props.linkAnalyzeData}
+                isLoading={props.isAnalyzing}
+              />
+            </Col>
+          </Row>
         </div>
       </div>
     </>

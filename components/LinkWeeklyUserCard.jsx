@@ -31,15 +31,7 @@ const getMonthName = (number) => {
     return month[number === 0 ? 0 : number - 1];
   }
 };
-const days = [
-  'SUN',
-  'MON',
-  'TUE',
-  'WED',
-  'THU',
-  'FRI',
-  'SAT',
-];
+const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
 const getMonthNames = (data) => {
   const DATA = [];
@@ -76,11 +68,14 @@ export default class Example extends PureComponent {
 
   render() {
     return (
-      <div style={{ width: '100%', height: '100%' }}>
+      <>
         {this.props.isLoading || !this.props.data ? (
           <Skeleton height={159} width={'100%'} />
         ) : (
-          <>
+          <div
+            style={{ width: '100%', height: '100%' }}
+            className='py-1 text-center hover:border-transparent hover:bg-white hover:shadow-xl theme-rounded'
+          >
             <ResponsiveContainer>
               <ComposedChart data={getMonthNames(this.props.data)}>
                 <CartesianGrid stroke='#f5f5f5' />
@@ -94,13 +89,13 @@ export default class Example extends PureComponent {
                   fill='#8884d8'
                   stroke='#8884d8'
                 />
-                <Bar dataKey='visitor' barSize={20} fill='#413ea0' />
+                <Bar dataKey='visitor' barSize={15} fill='#413ea0' />
                 <Line type='monotone' dataKey='visitor' stroke='#ff7300' />
               </ComposedChart>
             </ResponsiveContainer>
-          </>
+          </div>
         )}
-      </div>
+      </>
     );
   }
 }

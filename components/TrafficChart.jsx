@@ -73,7 +73,7 @@ export default class Example extends PureComponent {
                 <XAxis dataKey='name' />
                 <YAxis />
                 <Tooltip />
-                {/* <Legend /> */}
+                <Legend />
                 {/* <Line
                   type='monotone'
                   dataKey='totalClick'
