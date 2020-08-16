@@ -62,11 +62,11 @@ function DeleteModal(props) {
                   </h3>
                   <div className='mt-2'>
                     <p className='text-sm leading-5 text-gray-500'>
-                      Are you sure you want to Delete your link? All of your
-                      data of this link will be permanently removed. This action
-                      cannot be undone.
+                      Are you sure you want to Delete your link?
+                      <br/> All of your data of this link will be permanently removed.
+                      <br/> This action cannot be undone.
                     </p>
-                    <div className='mt-5'>
+                    {/* <div className='mt-5'>
                       <label
                         class='block text-gray-700 text-sm font-bold mb-2 text-red'
                         for='username'
@@ -82,23 +82,21 @@ function DeleteModal(props) {
                         value={yes}
                         onChange={(e) => setyes(e.target.value.toUpperCase())}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
             <div className='bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse'>
-              {yes === 'YES' ? (
-                <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
-                  <button
-                    type='button'
-                    className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red text-base leading-6 font-medium text-white shadow-sm hover:bg-red focus:outline-none focus:border-red focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5'
-                    onClick={deleteFun}
-                  >
-                    Delete
-                  </button>
-                </span>
-              ) : null}
+              <span className='flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto'>
+                <button
+                  type='button'
+                  className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-red text-base leading-6 font-medium text-white shadow-sm hover:bg-red focus:outline-none focus:border-red focus:shadow-outline-red transition ease-in-out duration-150 sm:text-sm sm:leading-5'
+                  onClick={deleteFun}
+                >
+                  Delete
+                </button>
+              </span>
 
               <span className='mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto'>
                 <button
