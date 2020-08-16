@@ -18,13 +18,15 @@ const auth = (props) => {
       if (isPrivateRoute) {
         if (!token) router.push('/login');
       }
-      if (isAuthRoute) {
+      else if (isAuthRoute) {
         if (token) {
           toast.warn('You are already logged in 😜');
           router.push('/');
         } else {
           setauthloading(false)
         }
+      } else {
+          setauthloading(false);
       }
     }, [router.route]);
   }
