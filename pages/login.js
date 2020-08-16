@@ -63,14 +63,12 @@ function login() {
           <div>
             <h1 className='theme-font text-orange-900 text-5xl'>Shortiffy</h1>
             <h2 className='text-3xl leading-9 theme-font-montserrat-black text-gray-900'>
-              Sign in to your account 🥳
+              Sign in to your account 
             </h2>
             <p className='pt-2'>
-              <Link href='/register'>
-                <span className='float-right text-xs text-gray-500 font-bold'>
-                  I dont have a account
-                </span>
-              </Link>
+              <span className='float-right text-xs text-gray-500 font-bold'>
+                <Link href='/register'>I dont have a account</Link>
+              </span>
             </p>
           </div>
           <form className='mt-8' action='#' method='POST' onSubmit={loginUser}>
