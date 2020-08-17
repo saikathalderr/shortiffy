@@ -1,22 +1,17 @@
-import React from 'react';
-import { GoogleLogin } from 'react-google-login';
-
-const responseGoogle = (response) => {
-  console.log(response);
-};
+import React from 'react'
+import Google from './social/google'
+import Facebook from './social/facebook'
 
 function SocialLogin() {
   return (
     <>
-      <GoogleLogin
-        clientId='658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'
-        buttonText='Continue with Google'
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-      />
+    <div className='my-5'>
+      <hr/>
+    </div>
+      <Google/>
+      {/* <Facebook/> */}
     </>
-  );
+  )
 }
 
-export default SocialLogin;
+export default SocialLogin

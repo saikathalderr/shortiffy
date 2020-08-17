@@ -6,7 +6,7 @@ import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
 import { API_URL } from '../config';
 import axios from 'axios';
 import Router from 'next/router';
-// import SocialLogin from '../components/SocialLogin';
+import SocialLogin from '../components/SocialLogin';
 
 function Register() {
   const [email, setemail] = useState('');
@@ -155,10 +155,9 @@ function Register() {
                 </button>
               </Link> */}
             </div>
-            {/* <div className='my-5 text-gray-300 text-center'>Or</div>
             <div className='text-center'>
               <SocialLogin />
-            </div> */}
+            </div>
           </form>
         </div>
       </div>

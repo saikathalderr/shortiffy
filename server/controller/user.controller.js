@@ -68,7 +68,12 @@ exports.loginNormlaUser = async (req, res) => {
 
     bcrypt.compare(password, hasUser.password, function (err, result) {
       if (err) throw new Error(err);
-      if (!result) throw new Error(`Wrong password 😕`);
+      if (!result) {
+        return res.status(500).json({
+          status: 'error',
+          message: `Wrong password 😕`,
+        });
+      }
 
       let user = { ...hasUser._doc };
       delete user['password'];

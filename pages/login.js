@@ -6,7 +6,7 @@ import {
   faLongArrowAltLeft,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
-import { API_URL } from '../config';
+import { API_URL, HOST_URL, FETCH_TIME } from '../config';
 import axios from 'axios';
 import Router from 'next/router';
 import SocialLogin from '../components/SocialLogin';
@@ -39,9 +39,13 @@ function login() {
         if (res.data.status === 'success') {
           localStorage.setItem('token', res.data.token);
           setTimeout(() => {
-            toast[res.data.status](res.data.message);
-            Router.push('/dashboard');
-          }, 3000);
+            // Router.push('/dashboard');
+            window.location.href = `${HOST_URL}/dashboard`;
+            // toast[res.data.status](res.data.message);
+          }, FETCH_TIME);
+        } else if (res.data.status === 'error') {
+          toast[res.data.status](res.data.message);
+          setloading(false);
         }
       });
   };
@@ -63,7 +67,7 @@ function login() {
           <div>
             <h1 className='theme-font text-orange-900 text-5xl'>Shortiffy</h1>
             <h2 className='text-3xl leading-9 theme-font-montserrat-black text-gray-900'>
-              Sign in to your account 
+              Sign in to your account
             </h2>
             <p className='pt-2'>
               <span className='float-right text-xs text-gray-500 font-bold'>
@@ -171,10 +175,9 @@ function login() {
                 </button>
               </Link> */}
             </div>
-            {/* <div className='my-5 text-gray-300 text-center'>Or</div>
             <div className='text-center'>
               <SocialLogin />
-            </div> */}
+            </div>
           </form>
         </div>
       </div>
