@@ -40,6 +40,18 @@ const monthlyCount = (data) => {
   });
   return monthlyData;
 };
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active) {
+    return (
+      <div className='bg-white p-2 bg-opacity-95 text-left'>
+        <p className='text-black font-bold'>{`${payload[0].value} Visitors`}</p>
+        <p className='text-black'>{`${payload[0].payload.name}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
 export default class Example extends PureComponent {
   static jsfiddleUrl = '//jsfiddle.net/alidingling/9wnuL90w/';
 
@@ -72,7 +84,7 @@ export default class Example extends PureComponent {
                 <CartesianGrid strokeDasharray='3 3' />
                 <XAxis dataKey='name' />
                 <YAxis />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend />
                 {/* <Line
                   type='monotone'
