@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'recharts';
 import Skeleton from 'react-loading-skeleton';
+import { Empty } from 'antd';
 
 const getMonthName = (number) => {
   if (number >= 0) {
@@ -77,23 +78,27 @@ export default class Example extends PureComponent {
             style={{ width: '100%', height: '100%' }}
             className='py-1 text-center hover:border-transparent hover:bg-white hover:shadow-xl theme-rounded'
           >
-            <ResponsiveContainer>
-              <ComposedChart data={getMonthNames(this.props.data)}>
-                <CartesianGrid stroke='#f5f5f5' />
-                <XAxis dataKey='day' />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                {/* <Legend /> */}
-                <Area
-                  type='monotone'
-                  dataKey='visitor'
-                  fill='#8884d8'
-                  stroke='#8884d8'
-                />
-                <Bar dataKey='visitor' barSize={15} fill='#413ea0' />
-                <Line type='monotone' dataKey='visitor' stroke='#ff7300' />
-              </ComposedChart>
-            </ResponsiveContainer>
+            {this.props.data.totalTimeViews.length ? (
+              <ResponsiveContainer>
+                <ComposedChart data={getMonthNames(this.props.data)}>
+                  <CartesianGrid stroke='#f5f5f5' />
+                  <XAxis dataKey='day' />
+                  <YAxis />
+                  <Tooltip content={<CustomTooltip />} />
+                  {/* <Legend /> */}
+                  <Area
+                    type='monotone'
+                    dataKey='visitor'
+                    fill='#8884d8'
+                    stroke='#8884d8'
+                  />
+                  <Bar dataKey='visitor' barSize={15} fill='#413ea0' />
+                  <Line type='monotone' dataKey='visitor' stroke='#ff7300' />
+                </ComposedChart>
+              </ResponsiveContainer>
+            ) : (
+              <Empty />
+            )}
           </div>
         )}
       </>

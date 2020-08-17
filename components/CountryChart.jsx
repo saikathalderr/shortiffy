@@ -11,11 +11,13 @@ import {
   ResponsiveContainer,
   LabelList,
 } from 'recharts';
+import { Empty } from 'antd';
+
 import Skeleton from 'react-loading-skeleton';
 
 const renderCustomizedLabel = (props) => {
   const { x, y, width, height, value } = props;
-    const radius = 25;
+  const radius = 25;
 
   return (
     <g>
@@ -293,7 +295,7 @@ const getCountryName = (countryCode) => {
   } else {
     return countryCode;
   }
-}
+};
 const CustomTooltip = ({ active, payload, label }) => {
   if (active) {
     return (
@@ -322,19 +324,23 @@ export default class Example extends PureComponent {
             <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
               Country Traffic
             </h1>
-            <ResponsiveContainer>
-              <BarChart data={this.props.data.totalCountryViews} barSize={20}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='_id' />
-                <YAxis type='number' domain={[0, 'dataMax + 10']} />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar dataKey='visitor' fill='#8884d8'>
-                  <LabelList dataKey='_id' content={renderCustomizedLabel} />
-                </Bar>
-                {/* <Bar dataKey='uv' fill='#82ca9d' /> */}
-              </BarChart>
-            </ResponsiveContainer>
+            {this.props.data.totalCountryViews.length ? (
+              <ResponsiveContainer>
+                <BarChart data={this.props.data.totalCountryViews} barSize={20}>
+                  <CartesianGrid strokeDasharray='3 3' />
+                  <XAxis dataKey='_id' />
+                  <YAxis type='number' domain={[0, 'dataMax + 10']} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend />
+                  <Bar dataKey='visitor' fill='#8884d8'>
+                    <LabelList dataKey='_id' content={renderCustomizedLabel} />
+                  </Bar>
+                  {/* <Bar dataKey='uv' fill='#82ca9d' /> */}
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <Empty />
+            )}
           </>
         )}
       </div>

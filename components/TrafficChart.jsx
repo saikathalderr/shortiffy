@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   Area,
 } from 'recharts';
+import { Empty } from 'antd';
 
 import Skeleton from 'react-loading-skeleton';
 
@@ -65,41 +66,25 @@ export default class Example extends PureComponent {
             <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
               Monthly Traffic
             </h1>
-            <ResponsiveContainer>
-              {/* <ComposedChart data={monthlyCount(this.props)}>
-                <CartesianGrid stroke='#f5f5f5' />
-                <XAxis dataKey='name' />
-                <YAxis />
-                <Tooltip />
-                <Area
-                  type='monotone'
-                  dataKey='totalClick'
-                  fill='#8884d8'
-                  stroke='#8884d8'
-                />
-                <Bar dataKey='totalClick' barSize={20} fill='#413ea0' />
-                <Line type='monotone' dataKey='totalClick' stroke='#ff7300' />
-              </ComposedChart> */}
-              <AreaChart data={monthlyCount(this.props)}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='name' />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                {/* <Line
-                  type='monotone'
-                  dataKey='totalClick'
-                  stroke='#8884d8'
-                  activeDot={{ r: 8 }}
-                /> */}
-                <Area
-                  type='monotone'
-                  dataKey='totalClick'
-                  stroke='#8884d8'
-                  fill='#8884d8'
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            {this.props.data.totalMonthlyViews.length ? (
+              <ResponsiveContainer>
+                <AreaChart data={monthlyCount(this.props)}>
+                  <CartesianGrid strokeDasharray='3 3' />
+                  <XAxis dataKey='name' />
+                  <YAxis />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend />
+                  <Area
+                    type='monotone'
+                    dataKey='totalClick'
+                    stroke='#8884d8'
+                    fill='#8884d8'
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <Empty />
+            )}
           </>
         )}
       </div>
