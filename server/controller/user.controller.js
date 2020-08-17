@@ -81,9 +81,10 @@ exports.loginNormlaUser = async (req, res) => {
       delete user['updatedAt'];
       delete user['__v'];
 
+      let exp = Math.floor(Date.now() / 1000) + 60 * 60;
       let token = jwt.sign(
         {
-          // exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          exp: exp,
           data: user,
         },
         process.env.SECRET

@@ -7,7 +7,7 @@ import {
   ANALYZING_SHORT_LINK,
 } from './types';
 import axios from 'axios';
-import { API_URL, FETCH_TIME } from '../../config';
+import { API_URL, FETCH_TIME, HOST_URL } from '../../config';
 import { toast } from 'react-toastify';
 
 if (process.browser) {
@@ -37,6 +37,9 @@ export const fetchShortUrls = () => (dispatch) => {
           });
         }, FETCH_TIME);
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout())
+        }
         return toast.error(res.data.message);
       }
     });
@@ -62,11 +65,13 @@ export const searchShortUrls = (search_text) => (dispatch) => {
           });
         }, FETCH_TIME);
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout());
+        }
         return toast.error(res.data.message);
       }
     });
 };
-
 export const fetchShortUrlById = (linkID) => (dispatch) => {
   dispatch({ type: FETCHING_SHORT_LINK });
   dispatch({ type: ANALYZING_SHORT_LINK });
@@ -90,11 +95,13 @@ export const fetchShortUrlById = (linkID) => (dispatch) => {
           dispatch(analyzeShortLink(linkID));
         }, FETCH_TIME);
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout());
+        }
         return toast.error(res.data.message);
       }
     });
 };
-
 export const createNewShortUrl = (data) => (dispatch) => {
   axios({
     method: 'POST',
@@ -111,11 +118,13 @@ export const createNewShortUrl = (data) => (dispatch) => {
       if (res.data.status === 'success') {
         dispatch(fetchShortUrls());
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout());
+        }
         return toast.error(res.data.message);
       }
     });
 };
-
 export const analyzeShortLink = (linkID) => (dispatch) => {
   axios({
     method: 'GET',
@@ -136,11 +145,13 @@ export const analyzeShortLink = (linkID) => (dispatch) => {
           });
         }, FETCH_TIME);
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout());
+        }
         return toast.error(res.data.message);
       }
     });
 };
-
 export const deleteShortUrl = (linkID) => (dispatch) => {
   axios({
     method: 'DELETE',
@@ -156,7 +167,16 @@ export const deleteShortUrl = (linkID) => (dispatch) => {
       if (res.data.status === 'success') {
         dispatch(fetchShortUrls());
       } else {
+        if (res.data.message === 'Token expired') {
+          dispatch(signout());
+        }
         return toast.error(res.data.message);
       }
     });
 };
+export const signout = () => (dispatch) => {
+  localStorage.removeItem('token')
+  setTimeout(() => {
+    window.location.href = `${HOST_URL}`;
+  }, FETCH_TIME);
+}
