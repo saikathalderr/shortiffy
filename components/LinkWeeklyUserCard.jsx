@@ -52,10 +52,11 @@ const getMonthNames = (data) => {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active) {
+    // console.log(payload);
     return (
-      <div className='bg-white p-2 bg-opacity-95'>
+      <div className='bg-white p-2 bg-opacity-95 text-left'>
         <p className='text-black font-bold'>{`${payload[0].value} Visitors`}</p>
-        <p className='text-black'>{`${label} ${payload[0].payload.month} ${payload[0].payload.year}`}</p>
+        <p className='text-black'>{`${label} - ${payload[0].payload._id.day} ${payload[0].payload.month} ${payload[0].payload.year}`}</p>
       </div>
     );
   }
