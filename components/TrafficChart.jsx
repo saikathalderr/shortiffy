@@ -63,25 +63,27 @@ export default class Example extends PureComponent {
           <Skeleton height={250} width={'100%'} />
         ) : (
           <>
-            <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
-              Monthly Traffic
-            </h1>
             {this.props.data.totalMonthlyViews.length ? (
-              <ResponsiveContainer>
-                <AreaChart data={monthlyCount(this.props)}>
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <XAxis dataKey='name' />
-                  <YAxis />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend />
-                  <Area
-                    type='monotone'
-                    dataKey='totalClick'
-                    stroke='#8884d8'
-                    fill='#8884d8'
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <>
+                <h1 className='text-black text-center theme-font-montserrat-extra-bold text-xl mb-3'>
+                  Monthly Traffic
+                </h1>
+                <ResponsiveContainer>
+                  <AreaChart data={monthlyCount(this.props)}>
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Area
+                      type='monotone'
+                      dataKey='totalClick'
+                      stroke='#8884d8'
+                      fill='#8884d8'
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </>
             ) : (
               <Empty />
             )}
