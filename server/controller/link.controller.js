@@ -26,7 +26,7 @@ exports.createNewLink = async (req, res) => {
         throw new Error(`The link value should be number 😥`);
     }
 
-    const url_crypto = cryptoRandomString({ length: 7, type: 'base64' });
+    const url_crypto = cryptoRandomString({ length: 7, type: 'url-safe' });
     const hasUrlCrypto = await Link.findOne({
       url_crypto: custom_link_name ? custom_link_name : url_crypto,
     });
@@ -173,9 +173,9 @@ exports.analyzeLink = async (req, res) => {
       {
         $group: {
           _id: {
-            year: { $year: "$analyze_data.timestamp" },
-            month: { $month: "$analyze_data.timestamp" },
-            day: { $dayOfMonth: "$analyze_data.timestamp" },
+            year: { $year: '$analyze_data.timestamp' },
+            month: { $month: '$analyze_data.timestamp' },
+            day: { $dayOfMonth: '$analyze_data.timestamp' },
           },
           visitor: { $sum: 1 },
         },
@@ -213,12 +213,16 @@ exports.redirectShortLink = async (req, res) => {
     const ip = req.query.ip;
     if (!url_crypto) res.redirect(process.env.CLIENT_URL);
     const link = await Link.findOne({ url_crypto: url_crypto });
-    if (!link) res.redirect(process.env.CLIENT_URL);
+    if (!link) {
+      return res.send(`The link is not found or deleted by the author`);
+    }
+    // if (!link) res.redirect(process.env.CLIENT_URL);
     if (!ip) res.redirect(link.long_url);
 
     const url = await Link.findOne({
       url_crypto: url_crypto,
     });
+
     if (url.will_expire && validator.isBefore(url.will_expire)) {
       return res.send(`The link is deleted by the author`);
     }
