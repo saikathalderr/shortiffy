@@ -1,67 +1,39 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { Menu, Dropdown } from 'antd';
+import { Avatar } from 'antd';
+import { FETCH_TIME, HOST_URL } from '../config';
 
 function Profile() {
-  const [menu, setmenu] = useState(false);
+  const menus = (
+    <Menu>
+      <Menu.Item>
+        <a target='_blank' href='#'>
+          Account
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a target='_blank' href='#'>
+          Settings
+        </a>
+      </Menu.Item>
+      <Menu.Item danger onClick={() => {
+          localStorage.removeItem('token');
+          setTimeout(() => {
+            window.location.href = `${HOST_URL}`;
+          }, FETCH_TIME);
+      }}>
+        Log out
+      </Menu.Item>
+    </Menu>
+  );
   return (
     <>
-      <div className='relative inline-block text-left'>
-        <div>
-          <button
-            className='theme-icon-btn ml-10'
-            onClick={() => setmenu(!menu)}
-          >
-            <FontAwesomeIcon icon={faUser} />
-          </button>
-        </div>
-        {menu ? (
-          <div
-            className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg'
-            onMouseLeave={() => setmenu(false)}
-          >
-            <div className='rounded-md bg-white shadow-xs'>
-              <div
-                className='py-1'
-                role='menu'
-                aria-orientation='vertical'
-                aria-labelledby='options-menu'
-              >
-                <a
-                  href='#'
-                  className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-                  role='menuitem'
-                >
-                  Account settings
-                </a>
-                <a
-                  href='#'
-                  className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-                  role='menuitem'
-                >
-                  Support
-                </a>
-                <a
-                  href='#'
-                  className='block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-                  role='menuitem'
-                >
-                  License
-                </a>
-                <form method='POST' action='#'>
-                  <button
-                    type='submit'
-                    className='block w-full text-left px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900'
-                    role='menuitem'
-                  >
-                    Sign out
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </div>
+      <Dropdown overlay={menus} className='ml-5 cursor-pointer'>
+        <Avatar
+          onClick={(e) => e.preventDefault()}
+          src='https://tinyurl.com/y2fo9uhf'
+        />
+      </Dropdown>
     </>
   );
 }
