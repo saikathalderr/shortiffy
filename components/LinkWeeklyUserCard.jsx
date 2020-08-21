@@ -47,7 +47,7 @@ const getMonthNames = (data) => {
     };
     DATA.push(newObj);
   });
-  console.log(DATA);
+  // console.log(DATA);
   return DATA;
 };
 

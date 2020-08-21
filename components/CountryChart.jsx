@@ -26,7 +26,7 @@ const renderCustomizedLabel = (props) => {
         cy={y - radius}
         r={radius}
         fill='#4300ff'
-        fill-opacity='0.0'
+        fillOpacity='0.0'
       />
       <image
         xlinkHref={`http://catamphetamine.gitlab.io/country-flag-icons/3x2/${value}.svg`}
