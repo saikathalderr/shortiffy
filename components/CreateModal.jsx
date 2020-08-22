@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { faPlusSquare, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DatePicker, Input } from 'antd';
+import { DatePicker, Input, Form } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import {
@@ -17,16 +18,27 @@ function CreateModal(props) {
   const [linkValue, setLinkValue] = useState(null);
   const [longUrl, setLongUrl] = useState('');
   const [customLink, setcustomLink] = useState('');
-
+  const [safeCustomLink, setsafeCustomLink] = useState(null)
   const [validate, setValidate] = useState(false);
 
   useEffect(() => {
-    if ((expire && !expireDate) || !longUrl) {
+    if (customLink.length >= 1) {
+      var reg = /^[a-zA-Z0-9_-]*$/;
+      if (reg.test(customLink) == true) {
+        setsafeCustomLink(true)
+      } else {
+        setsafeCustomLink(false)
+      }
+    }
+  }, [customLink])
+
+  useEffect(() => {
+    if ((expire && !expireDate) || !longUrl || (customLink && !safeCustomLink)) {
       setValidate(false);
     } else {
       setValidate(true);
     }
-  }, [create, expire, expireDate, linkValue, longUrl]);
+  }, [create, expire, expireDate, linkValue, longUrl, customLink, safeCustomLink]);
 
   const onChange = (date, dateString) => {
     // console.log(date, dateString);
@@ -94,12 +106,16 @@ function CreateModal(props) {
                   className='mt-3'
                 />
                 {
-                  customLink.length ? <Input
-                    placeholder='Set a custom name for the short link'
-                    value={`https://shr.fy/${customLink}`}
-                    className='mt-3'
-                    readOnly
-                  /> : null
+                  customLink.length ? 
+                    <Form.Item validateStatus={safeCustomLink ? 'success' : 'error'} extra={!safeCustomLink ? 'The custome link is not safe' : null}>
+                      <Input
+                        placeholder='Set a custom name for the short link'
+                        value={`https://shr.fy/${customLink}`}
+                        className='mt-3'
+                        readOnly
+                      />
+                    </Form.Item>
+                   : null
                 }
                 <label className='mt-2 block text-gray-500 font-bold'>
                   <input
