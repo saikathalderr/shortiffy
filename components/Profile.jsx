@@ -1,7 +1,18 @@
 import React from 'react';
 import { Menu, Dropdown } from 'antd';
 import { Avatar } from 'antd';
+import { toast } from 'react-toastify';
 import { FETCH_TIME, HOST_URL } from '../config';
+
+const SignOut = () => {
+  if (confirm(`Are you sure you want to logout ?`)) {
+    localStorage.removeItem('token');
+    setTimeout(() => {
+      window.location.href = `${HOST_URL}`;
+      toast(`Come back soon 🤗`)
+    }, FETCH_TIME);
+  }
+}
 
 function Profile() {
   const menus = (
@@ -16,12 +27,7 @@ function Profile() {
           Settings
         </a>
       </Menu.Item>
-      <Menu.Item danger onClick={() => {
-          localStorage.removeItem('token');
-          setTimeout(() => {
-            window.location.href = `${HOST_URL}`;
-          }, FETCH_TIME);
-      }}>
+      <Menu.Item danger onClick={SignOut}>
         Log out
       </Menu.Item>
     </Menu>
