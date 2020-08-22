@@ -12,13 +12,15 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       {process.browser ? (
-        <Provider store={store}>
-          <Auth>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </Auth>
-        </Provider>
-      ) : <Loading/>}
+        <div className='bg-white'>
+          <Provider store={store}>
+            <Auth>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </Auth>
+          </Provider>
+        </div>
+      ) : <Loading />}
     </>
   );
 }

@@ -19,16 +19,16 @@ function Profile() {
     <Menu>
       <Menu.Item>
         <a target='_blank' href='#'>
-          Account
+          <b>Your account</b>
         </a>
       </Menu.Item>
       <Menu.Item>
         <a target='_blank' href='#'>
-          Settings
+          <b>Settings</b>
         </a>
       </Menu.Item>
       <Menu.Item danger onClick={SignOut}>
-        Log out
+        <b>Log out</b>
       </Menu.Item>
     </Menu>
   );

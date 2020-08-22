@@ -17,7 +17,7 @@ function Nav() {
             </h1>
           </Link>
         </div>
-        <div className='flex-1 h-12 text-right'>
+        <div className='flex-1 mt-5 text-right'>
           {auth ? (
             <>
               <Link href='/dashboard'>

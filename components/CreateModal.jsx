@@ -11,6 +11,7 @@ import {
 
 function CreateModal(props) {
   const [create, setCreateStatus] = useState(false);
+  const [value, setValue] = useState(false);
   const [expire, setExpire] = useState(false);
   const [expireDate, setExpireDate] = useState(null);
   const [linkValue, setLinkValue] = useState(null);
@@ -57,7 +58,7 @@ function CreateModal(props) {
         }}
       >
         <FontAwesomeIcon icon={faPlusSquare} className='mr-2' />
-        Create New
+        Create New Link
       </button>
       {create ? (
         <div className='z-999 fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center'>
@@ -100,7 +101,16 @@ function CreateModal(props) {
                     readOnly
                   /> : null
                 }
-                <Input
+                <label className='mt-2 block text-gray-500 font-bold'>
+                  <input
+                    className='mr-2 leading-tight'
+                    type='checkbox'
+                    value={expire}
+                    onClick={(e) => setValue(e.target.checked)}
+                  />
+                  <span className='text-sm'>I want to add link value</span>
+                </label>
+                {value ? <Input
                   className='my-3'
                   placeholder='Set link value per visitor.'
                   min={0}
@@ -108,7 +118,8 @@ function CreateModal(props) {
                   onChange={(e) => setLinkValue(e.target.value)}
                   defaultValue={linkValue}
                   type='number'
-                />
+                /> : null}
+
                 <label className='mt-2 block text-gray-500 font-bold'>
                   <input
                     className='mr-2 leading-tight'
@@ -139,10 +150,10 @@ function CreateModal(props) {
                     Create
                   </button>
                 ) : (
-                  <button disabled className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base bg-opacity-50 leading-6 font-medium text-white shadow-sm focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5 cursor-not-allowed'>
-                    Create
-                  </button>
-                )}
+                    <button disabled className='inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-orange-900 text-base bg-opacity-50 leading-6 font-medium text-white shadow-sm focus:outline-none focus:border-orange-900 focus:shadow-outline-orange-900 transition ease-in-out duration-150 sm:text-sm sm:leading-5 cursor-not-allowed'>
+                      Create
+                    </button>
+                  )}
               </span>
             </div>
           </div>
