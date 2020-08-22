@@ -335,7 +335,7 @@ export default class Example extends PureComponent {
                     <XAxis dataKey='_id' />
                     <YAxis type='number' domain={[0, 'dataMax + 10']} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend />
+                    {/* <Legend /> */}
                     <Bar dataKey='visitor' fill='#8884d8'>
                       <LabelList
                         dataKey='_id'

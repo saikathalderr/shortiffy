@@ -74,7 +74,7 @@ export default class Example extends PureComponent {
                     <XAxis dataKey='name' />
                     <YAxis />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend />
+                    {/* <Legend /> */}
                     <Area
                       type='monotone'
                       dataKey='totalClick'
