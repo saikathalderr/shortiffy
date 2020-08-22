@@ -103,3 +103,26 @@ exports.loginNormlaUser = async (req, res) => {
     });
   }
 };
+
+exports.checkHasEmail = async (req, res) => {
+  try {
+    const email = req.params.email;
+    if (!email) throw new Error(`Input an email address to check 🥱`)
+    const hasUser = await User.findOne({ email: email })
+    if (hasUser) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'has email',
+      }); 
+    }
+    return res.status(200).json({
+      status: 'success',
+      message: 'no email',
+    }); 
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+}

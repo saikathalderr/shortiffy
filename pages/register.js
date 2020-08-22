@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons';
-import { API_URL } from '../config';
+import { API_URL, FETCH_TIME } from '../config';
+import { Spin, Tooltip } from 'antd';
+import { LoadingOutlined, WarningOutlined, CheckOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Router from 'next/router';
 import SocialLogin from '../components/SocialLogin';
 
+const antIcon = <LoadingOutlined style={{ fontSize: 20 }} spin />;
+
 function Register() {
   const [email, setemail] = useState('');
+  const [hasEmail, sethasEmail] = useState(false)
+  const [hasEmailChecking, sethasEmailChecking] = useState(false)
   const [fullname, setfullname] = useState('');
   const [password, setpassword] = useState('');
   const [loading, setloading] = useState(false);
@@ -44,6 +50,42 @@ function Register() {
       });
   };
 
+  const checkHasEmail = () => {
+    sethasEmailChecking(true)
+    axios({
+      method: 'GET',
+      url: `${API_URL}/user/checkHasEmail/${email}`,
+      validateStatus: (status) => {
+        return true;
+      },
+    })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((res) => {
+        if (res.data.message === 'has email') {
+          sethasEmail(true)
+        } else {
+          sethasEmail(false)
+        }
+        setTimeout(() => {
+          sethasEmailChecking(false)
+        }, FETCH_TIME);
+      });
+  }
+
+  useEffect(() => {
+    if (email.length >= 1) {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (reg.test(email) == true) {
+        checkHasEmail()
+      }
+    } else {
+      sethasEmail(false)
+      sethasEmailChecking(false)
+    }
+  }, [email])
+
   return (
     <>
       <div className='bg-white border-b-8 border-orange-900 min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
@@ -77,7 +119,25 @@ function Register() {
           >
             <input type='hidden' name='remember' value='true' />
             <div className='rounded-md shadow-sm'>
-              <div>
+              <div class="flex items-center border border-gray-300">
+                <input
+                  aria-label='Email address'
+                  name='email'
+                  type='email'
+                  value={email}
+                  onChange={(e) => {
+                    setemail(e.target.value);
+                  }}
+                  required
+                  className='appearance-none rounded-none relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-orange-900 focus:border-orange-900-300 focus:z-10 sm:text-sm sm:leading-5'
+                  placeholder='Email address'
+                />
+                {hasEmailChecking ? <Spin className='flex-shrink-0 mr-2' indicator={antIcon} /> : null}
+                {hasEmail && email ? <Tooltip placement="rightTop" color='red' title="Email already exists">
+                  <WarningOutlined className='text-red mr-5' />
+                </Tooltip> : null}
+              </div>
+              {/* <div>
                 <input
                   aria-label='Email address'
                   name='email'
@@ -90,7 +150,7 @@ function Register() {
                   className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-orange-900 focus:border-orange-900-300 focus:z-10 sm:text-sm sm:leading-5'
                   placeholder='Email address'
                 />
-              </div>
+              </div> */}
               <div className='-mt-px'>
                 <input
                   aria-label='Full Name'
@@ -139,13 +199,13 @@ function Register() {
                   Signing up...
                 </button>
               ) : (
-                <button
-                  type='submit'
-                  className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-20 hover:bg-opacity-25'
-                >
-                  Sign Up
-                </button>
-              )}
+                  <button
+                    type='submit'
+                    className='w-1/2 py-2 px-4 rounded text-sm leading-5 theme-font-montserrat-black text-orange-900 bg-orange-900 bg-opacity-20 hover:bg-opacity-25'
+                  >
+                    Sign Up
+                  </button>
+                )}
               {/* <Link href='/login'>
                 <button
                   type='submit'
