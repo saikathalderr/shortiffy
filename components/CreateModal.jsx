@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { faPlusSquare, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DatePicker, Input, Form } from 'antd';
+import { DatePicker, Input, Form, Checkbox } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
@@ -106,7 +106,7 @@ function CreateModal(props) {
                   className='mt-3'
                 />
                 {
-                  customLink.length ? 
+                  customLink.length ?
                     <Form.Item validateStatus={safeCustomLink ? 'success' : 'error'} extra={!safeCustomLink ? 'The custome link is not safe' : null}>
                       <Input
                         placeholder='Set a custom name for the short link'
@@ -115,16 +115,15 @@ function CreateModal(props) {
                         readOnly
                       />
                     </Form.Item>
-                   : null
+                    : null
                 }
                 <label className='mt-2 block text-gray-500 font-bold'>
-                  <input
-                    className='mr-2 leading-tight'
-                    type='checkbox'
-                    value={expire}
-                    onClick={(e) => setValue(e.target.checked)}
-                  />
-                  <span className='text-sm'>I want to add link value</span>
+                  <Checkbox
+                    checked={value}
+                    onChange={(e) => setValue(e.target.checked)}
+                  >
+                    I want to add link value
+                  </Checkbox>
                 </label>
                 {value ? <Input
                   className='my-3'
@@ -135,15 +134,13 @@ function CreateModal(props) {
                   defaultValue={linkValue}
                   type='number'
                 /> : null}
-
                 <label className='mt-2 block text-gray-500 font-bold'>
-                  <input
-                    className='mr-2 leading-tight'
-                    type='checkbox'
-                    value={expire}
-                    onClick={(e) => setExpire(e.target.checked)}
-                  />
-                  <span className='text-sm'>I want this link to expire</span>
+                  <Checkbox
+                    checked={expire}
+                    onChange={(e) => setExpire(e.target.checked)}
+                  >
+                    I want this link to expire
+                  </Checkbox>
                 </label>
                 {expire ? (
                   <DatePicker
