@@ -19,6 +19,7 @@ function Register() {
   const [fullname, setfullname] = useState('');
   const [password, setpassword] = useState('');
   const [loading, setloading] = useState(false);
+  const [query, setquery] = useState(Router.query)
 
   const registerUser = (e) => {
     e.preventDefault();
@@ -107,7 +108,7 @@ function Register() {
             </h2>
             <p className='pt-2'>
               <span className='float-right text-xs text-gray-500 font-bold'>
-                <Link href='/login'>I already have a account</Link>
+                <Link href={{ pathname: '/login', query: query }} >I already have a account</Link>
               </span>
             </p>
           </div>

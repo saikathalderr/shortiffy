@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,13 +8,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { API_URL, HOST_URL, FETCH_TIME } from '../config';
 import axios from 'axios';
-import Router from 'next/router';
 import SocialLogin from '../components/SocialLogin';
+import { useRouter } from 'next/router';
 
 function login() {
+  const router = useRouter();
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [loading, setloading] = useState(false);
+  const [query, setquery] = useState(router.query)
 
   const loginUser = (e) => {
     e.preventDefault();
@@ -40,7 +42,17 @@ function login() {
           localStorage.setItem('token', res.data.token);
           setTimeout(() => {
             // Router.push('/dashboard');
-            window.location.href = `${HOST_URL}/dashboard`;
+            const URL = `${HOST_URL}/dashboard`
+            const serialize = function(obj) {
+              var str = [];
+              for (var p in obj)
+                if (obj.hasOwnProperty(p)) {
+                  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+              return str.join("&");
+            }
+            if (query) localStorage.setItem('callBack', JSON.stringify(`?${serialize(query)}`))
+            window.location.href = URL
             // toast[res.data.status](res.data.message);
           }, FETCH_TIME);
         } else if (res.data.status === 'error') {
@@ -71,7 +83,7 @@ function login() {
             </h2>
             <p className='pt-2'>
               <span className='float-right text-xs text-gray-500 font-bold'>
-                <Link href='/register'>I dont have a account</Link>
+                <Link href={{ pathname: '/register', query: query }} >I dont have a account</Link>
               </span>
             </p>
           </div>

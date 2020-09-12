@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { faPlusSquare, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DatePicker, Input, Form, Checkbox } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
 import {
   createNewShortUrl,
   fetchShortUrls,
 } from '../store/actions/shortUrlAction';
+import { useRouter } from 'next/router';
 
 function CreateModal(props) {
+  const router = useRouter();
   const [create, setCreateStatus] = useState(false);
   const [value, setValue] = useState(false);
   const [expire, setExpire] = useState(false);
@@ -20,6 +21,21 @@ function CreateModal(props) {
   const [customLink, setcustomLink] = useState('');
   const [safeCustomLink, setsafeCustomLink] = useState(null)
   const [validate, setValidate] = useState(false);
+  const [callback, setcallback] = useState(localStorage.getItem('callBack'))
+
+
+  useEffect(() => {
+    if(callback){
+      router.push(`/dashboard${JSON.parse(callback)}`)
+    }
+  }, [callback])
+
+  useEffect(() => {
+    if(router.query.link) {
+      setCreateStatus(true)
+      setLongUrl(router.query.link)
+    }
+  }, [router.query])
 
   useEffect(() => {
     if (customLink.length >= 1) {
@@ -59,6 +75,8 @@ function CreateModal(props) {
     setLongUrl('')
     setValidate(false)
     setcustomLink('')
+    localStorage.removeItem('callBack')
+    router.push(`/dashboard`)
   };
 
   return (
@@ -78,7 +96,15 @@ function CreateModal(props) {
             <div
               className='absolute inset-0 bg-gray-900 opacity-50'
               onClick={() => {
-                setCreateStatus(false);
+                localStorage.removeItem('callBack')
+                setCreateStatus(false)
+                setExpire(false)
+                setExpireDate(null)
+                setLinkValue(null)
+                setLongUrl('')
+                setValidate(false)
+                setcustomLink('')
+                router.push(`/dashboard`)
               }}
             ></div>
           </div>
