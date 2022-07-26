@@ -12,7 +12,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       {process.browser ? (
-        <div className='bg-white'>
+        <div className='bg-white h-screen'>
           <Provider store={store}>
             <Auth>
               <Component {...pageProps} />

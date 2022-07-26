@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
-  faCaretUp,
-  faUsers,
-  faMoneyBillAlt,
-  faExchangeAlt,
-  faUserPlus,
   faCalendarDay,
   faClock,
   faCopy,
@@ -25,7 +20,7 @@ import CountryChart from '../components/CountryChart';
 import DeleteModal from '../components/DeleteModal';
 import Moment from 'react-moment';
 
-import { PageHeader, Button, Descriptions, message } from 'antd';
+import { PageHeader, message } from 'antd';
 
 import LinkValueCard from './LinkValueCard';
 import LinkVisitorsCard from './LinkVisitorsCard';
@@ -176,6 +171,7 @@ function AnalizeNumbers(props) {
             </Col>
           </Row>
         </div>
+        <div className="my-5"/>
         <div>
           <Row gutter={[16, 48]}>
             <Col xs={24} sm={12} className='h-64'>

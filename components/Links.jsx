@@ -15,8 +15,8 @@ function Links(props) {
       <div
         className={
           analyzeID === props.linkData._id
-            ? 'w-full rounded overflow-hidden p-2 my-2 bg-white link-container bg-gray-200'
-            : 'w-full rounded overflow-hidden p-2 my-2 bg-white link-container cursor-pointer hover:bg-gray-100'
+            ? 'w-full rounded overflow-hidden p-4 my-3 bg-white link-container'
+            : 'w-full rounded overflow-hidden p-4 my-3 bg-gray-100 bg-opacity-25 cursor-pointer link-container hover:bg-gray-200'
         }
         onClick={() => {
           router.push(`/dashboard?analyze=${props.linkData._id}`);
@@ -53,17 +53,6 @@ function Links(props) {
           <div className='flex-1 font-bold text-xs text-black bg-transparent ml-2 mt-1'>
             {props.linkData.short_url}
           </div>
-          {/* <input
-            readOnly={true}
-            value={props.linkData.short_url}
-            className='flex-1 font-bold text-xs text-black bg-transparent ml-2'
-          /> */}
-          {/* <Button
-            type='text'
-            danger
-            shape='circle'
-            icon={<FontAwesomeIcon icon={faTrashAlt} />}
-          /> */}
         </div>
 
         <input
@@ -71,12 +60,6 @@ function Links(props) {
           value={props.linkData.long_url}
           className='w-full text-xs text-gray-400 bg-transparent'
         />
-
-        {/* <div className='w-full'>
-          <span className='text-xs text-gray-400'>
-            <span className='font-bold'>By</span> Saikat Halder
-          </span>
-        </div> */}
       </div>
     </>
   );

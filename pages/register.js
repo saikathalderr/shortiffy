@@ -64,7 +64,7 @@ function Register() {
         console.log(err);
       })
       .then((res) => {
-        if (res.data.message === 'has email') {
+        if (res?.data?.message === 'has email') {
           sethasEmail(true)
         } else {
           sethasEmail(false)

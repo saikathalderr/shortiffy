@@ -130,18 +130,6 @@ exports.analyzeLink = async (req, res) => {
       },
     ]);
 
-    // const week_views = await Link.findOne({
-    //   _id: linkID,
-    //   analyze_data: {
-    //     $elemMatch: {
-    //       timestamp: {
-    //         $gte: this.getWeek().firstday,
-    //         $lte: this.getWeek().lastday,
-    //       },
-    //     },
-    //   },
-    // });
-
     const country_count = await Link.aggregate([
       { $match: { _id: mongoose.Types.ObjectId(linkID) } },
       { $unwind: '$analyze_data' },
@@ -210,13 +198,12 @@ exports.getIpData = async (req, res) => {
 exports.redirectShortLink = async (req, res) => {
   try {
     const url_crypto = req.params.url_crypto;
-    const ip = req.query.ip;
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     if (!url_crypto) res.redirect(process.env.CLIENT_URL);
     const link = await Link.findOne({ url_crypto: url_crypto });
     if (!link) {
       return res.send(`The link is not found or deleted by the author`);
     }
-    // if (!link) res.redirect(process.env.CLIENT_URL);
     if (!ip) res.redirect(link.long_url);
 
     const url = await Link.findOne({
@@ -226,31 +213,17 @@ exports.redirectShortLink = async (req, res) => {
     if (url.will_expire && validator.isBefore(url.will_expire)) {
       return res.send(`The link is deleted by the author`);
     }
-    const hasIP = await Link.findOne({
-      url_crypto: url_crypto,
-      'analyze_data.IP': ip,
-    });
 
-    if (hasIP) res.redirect(link.long_url);
-    if (!hasIP) {
-      const geo = geoip.lookup(ip);
-      const analyze = { ...geo, IP: ip, timestamp: new Date() };
-      if (geo) {
-        Link.findOneAndUpdate(
+    const geo = geoip.lookup(ip);
+    const analyze = { ...geo, IP: ip, timestamp: new Date() };
+    if (geo) {
+      await Link.findOneAndUpdate(
           { url_crypto: url_crypto },
           { $push: { analyze_data: analyze } }
-        )
-          .then(() => {
-            res.redirect(link.long_url);
-          })
-          .catch((err) => {
-            res.redirect(link.long_url);
-            console.log(err.message);
-          });
-      } else {
-        res.redirect(link.long_url);
-      }
+      )
     }
+    res.redirect(link.long_url);
+
   } catch (error) {
     return res.status(500).json({
       status: 'error',
@@ -319,12 +292,12 @@ exports.searchLink = async (req, res) => {
 };
 
 exports.getWeek = () => {
-  var curr = new Date(); // get current date
-  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-  var last = first + 6; // last day is the first day + 6
+  const curr = new Date(); // get current date
+  const first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  const last = first + 6; // last day is the first day + 6
 
-  var firstday = new Date(curr.setDate(first));
-  var lastday = new Date(curr.setDate(last));
+  const firstday = new Date(curr.setDate(first));
+  const lastday = new Date(curr.setDate(last));
 
   return { firstday, lastday };
 };
